@@ -45,6 +45,12 @@ template:
 ::: info Signed, but readable
 Those variables travel in the URL, signed with `APP_SECRET`, so they can't be tampered with. They
 are still **readable** in the page source: never pass secrets through them.
+
+The signature covers the **HTTP method** too: a `datastar.post()` URL only works as a POST (a GET
+gets a 405), so a link or a browser prefetch can't trigger it, and POSTs from other sites are refused
+(see [Security](../security)). Anyone who can see the page can still send that POST themselves, as
+often as they like: a signed URL isn't a permission. Changes that need authorization, or that must
+happen once, belong in a [controller](./controllers) that checks them.
 :::
 
 ## Events in a partial

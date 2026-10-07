@@ -127,12 +127,15 @@ sent with `Cache-Control: no-store`. Every other page keeps its ETag and public 
 ### Adding a spam check
 
 A check implements `Starlite\Forms\Spam\SpamCheck`: `markup()` prints what it needs inside the form,
-`check()` returns `null` or a `SpamResult`. Register it in `config/bootstrap.php` and list it in a form's
-`spam`:
+`check()` returns `null` or a `SpamResult`. Register it in `config/bootstrap.php` (or a package's
+`register()`) and list it in a form's `spam`:
 
 ```php
 $app->forms->addSpamCheck('altcha', fn (mixed $option, Form $form) => new AltchaCheck(…));
 ```
+
+Forms are checked once bootstrap has run, so a misspelled check name still stops the site at boot
+rather than letting spam through.
 
 A self-hosted proof-of-work challenge such as [ALTCHA](https://altcha.org) fits this privacy-first
 approach. Third-party captchas (Cloudflare Turnstile, hCaptcha) send visitors' IP addresses to another

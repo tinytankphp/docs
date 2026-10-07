@@ -34,7 +34,7 @@ whole blog. The month folder must match the post's `date`.
 | Field | Required | Description |
 |---|---|---|
 | `title` | yes | The post title |
-| `date` | yes | Publication date, `YYYY-MM-DD`; must match the `YYYY/MM` folder |
+| `date` | yes | Publication date, `YYYY-MM-DD` and a real day (`2026-02-30` is an error, not March 2); must match the `YYYY/MM` folder |
 | `updated` | no | Last significant change; used by the feed, the sitemap and `dateModified` |
 | `summary` | no | Teaser and meta description; defaults to the first paragraph that contains text |
 | `tags` | no | A list of tags (lowercased) |
