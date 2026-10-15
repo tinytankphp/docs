@@ -2,7 +2,7 @@
 
 [Datastar](https://data-star.dev) adds interactivity with HTML attributes: it keeps state in
 **signals**, sends requests to the server, and patches the page with the HTML the server sends back
-over server-sent events. Starlite renders that HTML with Twig, so interactive features are plain
+over server-sent events. TinyTank renders that HTML with Twig, so interactive features are plain
 templates.
 
 The Datastar client (v1) ships with the framework, matched to its PHP SDK, and `resources/js/app.js`
@@ -32,7 +32,7 @@ into the page by element id.
 ```
 
 `datastar.get('_partials/search')` prints a Datastar action (`@get("/datastar?config=…")`). On the
-server, Starlite renders the partial with the browser's **signals** in the `signals` variable. If
+server, TinyTank renders the partial with the browser's **signals** in the `signals` variable. If
 the template queues no events, its whole output is patched into the page, matched by element id.
 
 `post`, `put`, `patch` and `delete` work the same way. A second argument passes variables to the
@@ -102,7 +102,7 @@ final class ClockController extends Controller
 
 ## CSRF
 
-POST, PUT, PATCH and DELETE requests must come from your own site. Starlite checks the browser's
+POST, PUT, PATCH and DELETE requests must come from your own site. TinyTank checks the browser's
 `Sec-Fetch-Site` / `Origin` headers, which every browser sends with Datastar's `fetch()` requests,
 so there's no token to add. See [Security](../security#csrf-protection).
 
@@ -113,7 +113,7 @@ language: `|t`, `path()` and dates all follow it.
 
 ## From the Craft Datastar plugin
 
-| Craft Datastar plugin | Starlite |
+| Craft Datastar plugin | TinyTank |
 |---|---|
 | `{{ datastar.get('_partials/x', {id: 1}) }}` | same (also `post`, `put`, `patch`, `delete`) |
 | `{% patchelements %}…{% endpatchelements %}` | `{% apply patch_elements %}…{% endapply %}` |

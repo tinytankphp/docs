@@ -1,11 +1,11 @@
 # PHP API
 
-The public API of the classes a site uses, from the `starlite/framework` package
-(`vendor/starlite/framework/src/`, namespace `Starlite\`).
+The public API of the classes a site uses, from the `tinytank/framework` package
+(`vendor/tinytank/framework/src/`, namespace `TinyTank\`).
 
 ## Kernel
 
-`Starlite\Kernel`, available as `$this->app` in controllers, `$this->app()` in commands, and as the
+`TinyTank\Kernel`, available as `$this->app` in controllers, `$this->app()` in commands, and as the
 argument of `config/routes.php` and `config/bootstrap.php`.
 
 | Member | |
@@ -23,27 +23,27 @@ argument of `config/routes.php` and `config/bootstrap.php`.
 | `content(item, ?link): string` | an item's HTML with its components rendered; with `$link`, components become links (the feed) |
 | `cspAllow(directive, ...sources)` | CSP sources for the current response only |
 | `video(provider, id, start = 0): array` | a video's poster, title and player URL; allows the player for this response |
-| `$embeds` | `Starlite\Content\Embeds`: `check()`, `video()`, `fetch()`, `missing()` |
+| `$embeds` | `TinyTank\Content\Embeds`: `check()`, `video()`, `fetch()`, `missing()` |
 | `addTemplates(dir, ?namespace)` | add a package's templates after the site's, before the framework's |
-| `Kernel::TEMPLATES` | the framework's default templates folder (`@starlite/…`) |
+| `Kernel::TEMPLATES` | the framework's default templates folder (`@tinytank/…`) |
 | `stream(template, vars = []): StreamedResponse` | render a template as a Datastar response |
 | `error(status, message, headers = []): Response` | an error page |
 | `request(): Request` | the current request |
 | `addDeployStep(name, step, description, before, after)` | add a step to `deploy` |
 | `$root`, `$debug`, `$cacheDir` | project root, debug mode, cache directory |
-| `$twig`, `$router`, `$blog`, `$seo`, `$site`, `$container`, `$translations`, `$datastar`, `$vite`, `$publicConfig`, `$csp`, `$collections`, `$pages` | Starlite's services |
+| `$twig`, `$router`, `$blog`, `$seo`, `$site`, `$container`, `$translations`, `$datastar`, `$vite`, `$publicConfig`, `$csp`, `$collections`, `$pages` | TinyTank's services |
 | `$cdn` | CDN caching and purging: `skip()` keeps the current response out of the CDN, `usePurger()`, `purger()`, `url()` ([CDN caching](../deployment/cdn)) |
 | `$logger` | the log, a Monolog `Logger` (PSR-3); also `Psr\Log\LoggerInterface` in the container ([Logging](../features/logging)) |
 
 ## Controller
 
-`Starlite\Controller`, base class for app controllers. See [Controllers](../basics/controllers).
+`TinyTank\Controller`, base class for app controllers. See [Controllers](../basics/controllers).
 
 `render()`, `stream()`, `json()`, `notFound()`, `path()`, `t()`, `get()`, `request()`, and `$this->app`.
 
 ## Site
 
-`Starlite\Site` (`$app->site`, `site` in Twig).
+`TinyTank\Site` (`$app->site`, `site` in Twig).
 
 | Member | |
 |---|---|
@@ -60,13 +60,13 @@ argument of `config/routes.php` and `config/bootstrap.php`.
 
 ## Seo
 
-`Starlite\Seo\Seo` (`$app->seo`, `seo` in Twig). Fluent setters `title()`, `description()`,
+`TinyTank\Seo\Seo` (`$app->seo`, `seo` in Twig). Fluent setters `title()`, `description()`,
 `canonical()`, `image()`, `type()`, `noindex()`, `article()`, `schema()`; plus `url()`,
 `canonicalUrl()`, `imageUrl()`, `pageTitle()`, `documentTitle()`, `render()`. See [SEO](../features/seo).
 
 ## Blog
 
-Query posts with `$app->posts()` ([Querying content](../basics/querying)). `Starlite\Blog\Blog`
+Query posts with `$app->posts()` ([Querying content](../basics/querying)). `TinyTank\Blog\Blog`
 (`$app->blog`) is the source behind it: compiling, caching and files.
 
 | Method | |
@@ -92,14 +92,14 @@ A post is an array:
 | `draft` | bool |
 | `reading_minutes` | int |
 | `html` | the rendered post (safe to print raw) |
-| `source` | e.g. `2026/09/hello-starlite/index.md` |
+| `source` | e.g. `2026/09/hello-tinytank/index.md` |
 | `assets` | publishable files in the post folder |
 
-`Starlite\Blog\PostSeo::apply($seo, $post)` maps a post onto the page metadata.
+`TinyTank\Blog\PostSeo::apply($seo, $post)` maps a post onto the page metadata.
 
 ## Pages
 
-Query pages with `$app->pages()` ([Content pages](../content/pages)). `Starlite\Pages\Pages`
+Query pages with `$app->pages()` ([Content pages](../content/pages)). `TinyTank\Pages\Pages`
 (`$app->pages`) is the source behind it.
 
 | Member | |
@@ -112,11 +112,11 @@ Query pages with `$app->pages()` ([Content pages](../content/pages)). `Starlite\
 | `warmup()`, `publishAssets(publicDir)` | used by `deploy` |
 | `Pages::PATH`, `Pages::ASSET_URL` | the page route's requirement, `/media/pages` |
 
-`Starlite\Pages\PageSeo::apply($seo, $page)` maps a page onto the page metadata.
+`TinyTank\Pages\PageSeo::apply($seo, $page)` maps a page onto the page metadata.
 
 ## Collections
 
-`Starlite\Collections\Collections` (`$app->collections`), see [Data collections](../content/collections).
+`TinyTank\Collections\Collections` (`$app->collections`), see [Data collections](../content/collections).
 
 | Member | |
 |---|---|
@@ -128,13 +128,13 @@ Query pages with `$app->pages()` ([Content pages](../content/pages)). `Starlite\
 
 ## Images
 
-`Starlite\Images\Images` (`$app->images`), see [Images](../features/images): `picture()`,
+`TinyTank\Images\Images` (`$app->images`), see [Images](../features/images): `picture()`,
 `variant()`, `original()`, `publish()`, `size()`, `widthsFor()`; `$widths`, `$formats`, `$sizes`.
 `$app->image($url, $alt, $options)` is what `image()` prints.
 
 ## Forms
 
-`Starlite\Forms\Forms` (`$app->forms`), see [Forms](../features/forms).
+`TinyTank\Forms\Forms` (`$app->forms`), see [Forms](../features/forms).
 
 | Member | |
 |---|---|
@@ -149,7 +149,7 @@ Query pages with `$app->pages()` ([Content pages](../content/pages)). `Starlite\
 
 ## Csp
 
-`Starlite\Csp` (`$app->csp`), the Content Security Policy sent on pages (see [Security](../security#content-security-policy)).
+`TinyTank\Csp` (`$app->csp`), the Content Security Policy sent on pages (see [Security](../security#content-security-policy)).
 
 | Member | |
 |---|---|
@@ -162,16 +162,16 @@ Query pages with `$app->pages()` ([Content pages](../content/pages)). `Starlite\
 
 ## Container
 
-`Starlite\Container` (`$app->container`), PSR-11: `set(id, factoryOrValue)`, `get(id)`, `has(id)`.
+`TinyTank\Container` (`$app->container`), PSR-11: `set(id, factoryOrValue)`, `get(id)`, `has(id)`.
 
 ## Console
 
-- `Starlite\Console\AppCommand`: base class for commands; `app()`, `root()`
-- `Starlite\Console\Console::run($root)`: what `bin/console` calls
+- `TinyTank\Console\AppCommand`: base class for commands; `app()`, `root()`
+- `TinyTank\Console\Console::run($root)`: what `bin/console` calls
 
 ## Testing
 
-`Starlite\Testing\KernelTestCase`, the base class for app tests (needs `phpunit/phpunit`):
+`TinyTank\Testing\KernelTestCase`, the base class for app tests (needs `phpunit/phpunit`):
 `bootKernel()`, `request()`, `body()`, `tempDir()`, `copyToTemp()`, `write()`, and
 `requireViteBuild($app)` for tests that check built assets. `request()` takes form fields as
 `parameters:`. See [Testing](../testing).

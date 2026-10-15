@@ -1,4 +1,4 @@
-# Writing a Starlite package
+# Writing a TinyTank package
 
 A feature you want in several sites (an audio player component, a contact form, a newsletter
 integration) can live in its own Composer package. There's no plugin system to learn: a package is
@@ -11,7 +11,7 @@ The package has a class with a static `register()` method that receives the kern
 ```php
 namespace Acme\AudioPlayer;
 
-use Starlite\Kernel;
+use TinyTank\Kernel;
 
 final class AudioPlayer
 {
@@ -31,7 +31,7 @@ final class AudioPlayer
 The site installs it and calls it from `config/bootstrap.php`:
 
 ```sh
-composer require acme/starlite-audio-player
+composer require acme/tinytank-audio-player
 ```
 
 ```php
@@ -58,7 +58,7 @@ The package's templates use Tailwind classes the site must generate: tell the si
 package's folder to `resources/css/app.css`:
 
 ```css
-@source "../../vendor/acme/starlite-audio-player/templates";
+@source "../../vendor/acme/tinytank-audio-player/templates";
 ```
 
 ## Console commands and deploy steps
@@ -82,10 +82,10 @@ so it works whether or not the site enabled the command.
 
 ## A CDN
 
-A package can add a CDN to purge with a class implementing `Starlite\Cdn\Purger`, given in
+A package can add a CDN to purge with a class implementing `TinyTank\Cdn\Purger`, given in
 `register()` with `$app->cdn->usePurger(…)`. See [CDN caching](../deployment/cdn#another-cdn-as-a-package).
 
 ## Dependencies
 
-Require `starlite/framework` with the same constraint as sites (`^1.0@dev`) and keep the package's
+Require `tinytank/framework` with the same constraint as sites (`^0.1@dev`) and keep the package's
 own dependencies small: every site that installs it pulls them in.

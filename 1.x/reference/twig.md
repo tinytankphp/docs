@@ -4,9 +4,9 @@
 
 | Global | Type | |
 |---|---|---|
-| `site` | `Starlite\Site` | `site.name`, `site.description` (in the current language), `site.baseUrl`, `site.language`, `site.locale`, `site.defaultLanguage`, `site.languages` |
-| `seo` | `Starlite\Seo\Seo` | page metadata setters: `{% do seo.title('…') %}` (see [SEO](../features/seo)) |
-| `datastar` | `Starlite\Datastar` | Datastar actions, below |
+| `site` | `TinyTank\Site` | `site.name`, `site.description` (in the current language), `site.baseUrl`, `site.language`, `site.locale`, `site.defaultLanguage`, `site.languages` |
+| `seo` | `TinyTank\Seo\Seo` | page metadata setters: `{% do seo.title('…') %}` (see [SEO](../features/seo)) |
+| `datastar` | `TinyTank\Datastar` | Datastar actions, below |
 
 Plus anything your `config/bootstrap.php` adds.
 
@@ -19,16 +19,16 @@ Plus anything your `config/bootstrap.php` adds.
 | `image(url, alt = '', options = {})` | a `<picture>` with responsive AVIF/WebP versions for a post's or page's image, a plain `<img>` otherwise; options: `preset`, `loading`, `sizes`, any `<img>` attribute |
 | `form_spam(form)` | the spam checks' hidden fields for a form, inside its `<form>`; makes the page uncacheable when it prints a timing token |
 | `content(item)` | the item's HTML with its content components rendered (`entry` = the item) |
-| `posts()` | a `Starlite\Query` over the blog posts ([Querying content](../basics/querying)) |
-| `pages()` | a `Starlite\Query` over the content pages |
-| `collection(name)` | a `Starlite\Query` over a data collection |
+| `posts()` | a `TinyTank\Query` over the blog posts ([Querying content](../basics/querying)) |
+| `pages()` | a `TinyTank\Query` over the content pages |
+| `collection(name)` | a `TinyTank\Query` over a data collection |
 | `path(name, params = {}, language = null)` | URL path of a named route, in the current (or given) language |
 | `absolute_url(pathOrUrl)` | absolute URL from `APP_URL`; absolute `http(s)` URLs are returned unchanged |
 | `t(message, params = {}, language = null)` | translated text |
 | `vite(entry, …)` | `<link>`/`<script>` tags for Vite entry points (dev server or build); entries or lists of entries |
 | `vite_preload(source, …)` | `<link rel="preload">` for built fonts and images, by source path (e.g. a Fontsource `.woff2`); nothing with the dev server |
 | `theme_script()` | inline `<script>` setting `<html data-theme>` from the saved choice or the system setting; first in `<head>` |
-| `public_config()` | `<script type="application/json" id="starlite-config">` with config `public`, or nothing when empty |
+| `public_config()` | `<script type="application/json" id="tinytank-config">` with config `public`, or nothing when empty |
 | `seo_tags()` | the page's `<title>`, meta, canonical, Open Graph, Twitter, hreflang and JSON-LD |
 | `language_switcher()` | list of `{code, name, url, active, available}` for the current page |
 | `patch_signals(signals, options = {})` | Datastar: queue a signals patch (use with `do`) |

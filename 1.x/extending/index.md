@@ -1,4 +1,4 @@
-# Building a site on Starlite
+# Building a site on TinyTank
 
 A new site starts from the skeleton and installs the framework as a Composer package. The site adds
 its own routes, controllers, templates, content and commands, and **never edits the framework**.
@@ -22,12 +22,12 @@ Everything site-specific lives in your own files:
 Framework improvements then arrive with a single command, without touching your files:
 
 ```sh
-composer update starlite/framework
+composer update tinytank/framework
 ```
 
 If you find yourself needing to change the framework, that's a missing extension point: open an
-issue or contribute it to Starlite instead (see [Contributing](../contributing)).
-See [Updating Starlite](./updating) for versions and what to check after an update.
+issue or contribute it to TinyTank instead (see [Contributing](../contributing)).
+See [Updating TinyTank](./updating) for versions and what to check after an update.
 
 ## The extension points
 
@@ -37,12 +37,12 @@ See [Updating Starlite](./updating) for versions and what to check after an upda
 | `$app->container` | shared objects (a mailer, an API client) | [Services & bootstrap](./bootstrap#services) |
 | `src/Command/` | console commands, registered automatically | [Console commands](./commands) |
 | `$app->addDeployStep()` | build steps in `bin/console deploy` | [Deploy steps](./deploy-steps) |
-| `Starlite\Controller` | controllers with helpers | [Controllers](../basics/controllers) |
+| `TinyTank\Controller` | controllers with helpers | [Controllers](../basics/controllers) |
 | `vite.config.js` | entry points, extra Vite plugins | [Frontend & Vite](../features/frontend) |
 
 ## A typical small app
 
-Starlite is not opinionated about your application code. A small app usually is:
+TinyTank is not opinionated about your application code. A small app usually is:
 
 - the **blog**, for articles around the app's subject
 - one or more **custom routes and controllers**: the app itself, for instance an interactive home

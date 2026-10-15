@@ -1,6 +1,6 @@
 # Forms
 
-Starlite handles forms without a database: a visitor fills one in, it's checked, and it's **emailed**.
+TinyTank handles forms without a database: a visitor fills one in, it's checked, and it's **emailed**.
 Nothing is stored. The skeleton's Contact page (`/contact`, `/it/contatti`) is a working example.
 
 ## Defining a form
@@ -126,7 +126,7 @@ sent with `Cache-Control: no-store`. Every other page keeps its ETag and public 
 
 ### Adding a spam check
 
-A check implements `Starlite\Forms\Spam\SpamCheck`: `markup()` prints what it needs inside the form,
+A check implements `TinyTank\Forms\Spam\SpamCheck`: `markup()` prints what it needs inside the form,
 `check()` returns `null` or a `SpamResult`. Register it in `config/bootstrap.php` (or a package's
 `register()`) and list it in a form's `spam`:
 

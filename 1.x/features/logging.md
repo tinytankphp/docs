@@ -1,7 +1,7 @@
 # Logging
 
 When something goes wrong in production, the visitor sees a polite error page and the details go to
-the **log**: a file on your server, and optionally an email to you. Starlite logs with
+the **log**: a file on your server, and optionally an email to you. TinyTank logs with
 [Monolog](https://github.com/Seldaek/monolog), PHP's standard logging library, set up so the log helps
 you fix problems **without becoming a record of your visitors**.
 
@@ -48,10 +48,10 @@ production. Set `LOG_LEVEL` to change it, for example `LOG_LEVEL=warning` for a 
 
 A log is personal data as soon as it can tell who visited, and under the GDPR personal data needs a
 reason to be collected, has to be protected, and can't be kept forever. Most logging setups record
-far more than they need. Starlite's log is built to answer "what broke, and where?" and nothing else:
+far more than they need. TinyTank's log is built to answer "what broke, and where?" and nothing else:
 
 - **No IP addresses.** An IP address can identify a person (the EU Court of Justice has ruled so). Web
-  servers and many frameworks log it with every line; Starlite doesn't. A broken page is broken for
+  servers and many frameworks log it with every line; TinyTank doesn't. A broken page is broken for
   everyone, so who saw it adds nothing.
 - **No browser, no referrer.** The user agent and the page someone came from build a profile of a
   visitor; they don't help fix a bug.
@@ -64,15 +64,15 @@ far more than they need. Starlite's log is built to answer "what broke, and wher
   written in it (see [Forms](./forms#privacy)).
 - **No function arguments in traces.** An exception's stack trace lists the functions that were
   running, and PHP can include the values passed to them: a password being checked, an email
-  address being sent to. In production, Starlite turns that off (`zend.exception_ignore_args`), so
+  address being sent to. In production, TinyTank turns that off (`zend.exception_ignore_args`), so
   traces show where, not what.
 - **Deleted after 14 days.** The GDPR's *storage limitation* principle: keep data only as long as
   needed. Two weeks is enough to notice and fix a problem; `days` changes it.
 - **No third party.** Error-tracking services (Sentry, Bugsnag, Better Stack…) receive your errors,
-  and with them whatever the errors contain, on someone else's servers, often outside the EU. Starlite's
+  and with them whatever the errors contain, on someone else's servers, often outside the EU. TinyTank's
   log stays on your server, and alerts go through your own mailer.
 
-So Starlite's log describes your site, not your visitors. Your **web server's** access log is another
+So TinyTank's log describes your site, not your visitors. Your **web server's** access log is another
 matter: nginx and Apache record every request with its IP address unless you configure them not to
 (see [Servers](../deployment/servers#access-logs)).
 

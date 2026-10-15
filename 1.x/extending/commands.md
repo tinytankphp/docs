@@ -1,11 +1,11 @@
 # Console commands
 
-`bin/console` runs Starlite's commands (`deploy`, `cache:clear`) plus **every command class in
+`bin/console` runs TinyTank's commands (`deploy`, `cache:clear`) plus **every command class in
 `src/Command/`**, registered automatically.
 
 ## Writing a command
 
-Extend `Starlite\Console\AppCommand` to get the app through `$this->app()`:
+Extend `TinyTank\Console\AppCommand` to get the app through `$this->app()`:
 
 ```php
 <?php
@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Starlite\Console\AppCommand;
+use TinyTank\Console\AppCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

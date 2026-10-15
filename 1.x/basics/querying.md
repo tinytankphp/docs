@@ -118,5 +118,5 @@ Featured team members, alphabetically:
 ## In PHP
 
 `$this->app->posts()`, `$this->app->pages()` and `$this->app->collection('faq')` return the same
-`Starlite\Query`, with the same methods. With PHPStan, `posts()` and `pages()` are typed as queries
+`TinyTank\Query`, with the same methods. With PHPStan, `posts()` and `pages()` are typed as queries
 of posts and pages, so `->one()` is known to return such an array or `null`.

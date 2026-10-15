@@ -4,9 +4,9 @@ A translation sits next to the original in the post folder, as `index.<code>.md`
 folder's images:
 
 ```
-content/blog/2026/09/hello-starlite/
-  index.md          → /blog/hello-starlite        (default language)
-  index.it.md       → /it/blog/hello-starlite
+content/blog/2026/09/hello-tinytank/
+  index.md          → /blog/hello-tinytank        (default language)
+  index.it.md       → /it/blog/hello-tinytank
   cover.png
 ```
 
@@ -18,16 +18,16 @@ By default the slug is the same in every language. A translation can have its ow
 
 ```markdown
 ---
-title: Ciao, Starlite
-slug: ciao-starlite
+title: Ciao, TinyTank
+slug: ciao-tinytank
 ---
 ```
 
-The Italian post is then `/it/blog/ciao-starlite`. The folder name stays the post's identity: it's
-`post.slug` in templates and what you link with, and `path('blog_post', {slug: 'hello-starlite'})`
+The Italian post is then `/it/blog/ciao-tinytank`. The folder name stays the post's identity: it's
+`post.slug` in templates and what you link with, and `path('blog_post', {slug: 'hello-tinytank'})`
 writes the right URL for the current (or given) language. Each version's URL is its `uri` field.
 
-- The untranslated URL, `/it/blog/hello-starlite`, redirects permanently (301) to the Italian one, so
+- The untranslated URL, `/it/blog/hello-tinytank`, redirects permanently (301) to the Italian one, so
   existing links keep working.
 - The language switcher and `hreflang` link each version to its own URL.
 - `slug:` is only for translations: in the default language, rename the folder instead.
@@ -47,11 +47,11 @@ A translation needs its own `title`, and usually a `summary`. Everything it omit
 
 ```markdown
 ---
-title: Ciao, Starlite
+title: Ciao, TinyTank
 summary: Un micro framework senza database.
 ---
 
-Starlite è un piccolo framework PHP…
+TinyTank è un piccolo framework PHP…
 ```
 
 ## Untranslated posts

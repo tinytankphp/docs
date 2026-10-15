@@ -1,7 +1,7 @@
 # Images
 
 Images in posts and pages are prepared for the web automatically: smaller modern versions for every
-screen, and **no hidden metadata**. You add a photo to a post's folder, and Starlite does the rest.
+screen, and **no hidden metadata**. You add a photo to a post's folder, and TinyTank does the rest.
 
 ## What a visitor gets
 
@@ -36,7 +36,7 @@ Photos from phones and cameras carry **metadata** (EXIF): very often the **GPS p
 were taken, plus the device and the time. Published as they are, anyone could download the image and
 read where you were.
 
-Starlite re-saves every published image without metadata, the original included (JPEGs at quality
+TinyTank re-saves every published image without metadata, the original included (JPEGs at quality
 90, visually identical), and turns photos the right way up while doing so. The versions it makes have
 no metadata either. This happens in development too, so what you see is what's published.
 

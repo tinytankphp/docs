@@ -1,8 +1,8 @@
 # JavaScript & Datastar
 
-Most interactivity in a Starlite site needs no JavaScript of your own: [Datastar](../basics/datastar)
+Most interactivity in a TinyTank site needs no JavaScript of your own: [Datastar](../basics/datastar)
 attributes keep state in signals and talk to the server. Some features need real code, though:
-audio, canvas, maps, drag and drop. For those, Starlite uses one pattern:
+audio, canvas, maps, drag and drop. For those, TinyTank uses one pattern:
 
 - **Datastar drives the UI.** Buttons, sliders and what's visible are `data-*` attributes bound to
   signals, declared in the template.
@@ -21,7 +21,7 @@ any config:
 ```js
 // resources/js/pages/mixer.js
 import { effect, getPath, mergePatch } from 'datastar';
-import { persist, ready } from 'starlite';
+import { persist, ready } from 'tinytank';
 
 await ready; // Datastar has applied the page's data-signals
 
@@ -61,12 +61,12 @@ prefix for state that only matters in the browser, such as a volume or an open p
 
 ## Imports
 
-The Starlite Vite plugin sets up two aliases:
+The TinyTank Vite plugin sets up two aliases:
 
 | Import | What it is |
 |---|---|
 | `'datastar'` | The Datastar client, shipped with the framework so it matches the PHP SDK. Every bundle shares one instance, and with it the same signals |
-| `'starlite'` | Starlite's browser helpers, below |
+| `'tinytank'` | TinyTank's browser helpers, below |
 
 The useful part of the Datastar API for modules:
 
@@ -80,7 +80,7 @@ The useful part of the Datastar API for modules:
 ## `ready`
 
 ```js
-import { ready } from 'starlite';
+import { ready } from 'tinytank';
 await ready;
 ```
 
@@ -96,7 +96,7 @@ persist(/^_mixer\./, { key: 'mixer' });            // or a pattern on the dotted
 ```
 
 Restores the signals from `localStorage` over the page's defaults, then saves every change. Only the
-listed signals are read back, whatever the storage holds. Options: `key` (default `'starlite'`; give
+listed signals are read back, whatever the storage holds. Options: `key` (default `'tinytank'`; give
 each module its own) and `storage` (default `localStorage`; `sessionStorage` works too). If storage is
 unavailable (private mode, quota), the page simply starts from its defaults.
 
@@ -121,12 +121,12 @@ it under `public` in `config/app.php`:
 The layout prints it with `{{ public_config() }}` as a JSON data block, and modules read it:
 
 ```js
-import { publicConfig } from 'starlite';
+import { publicConfig } from 'tinytank';
 const { media_url } = publicConfig();
 ```
 
 It's an allowlist: nothing else from the config reaches the page. Everything under `public` is
-readable by anyone, so never put secrets or private URLs there. Starlite refuses to boot if a value
+readable by anyone, so never put secrets or private URLs there. TinyTank refuses to boot if a value
 contains `APP_SECRET`. The values are the same for every visitor, so pages stay cacheable, and a JSON
 data block isn't executed, so it needs no Content Security Policy entry.
 

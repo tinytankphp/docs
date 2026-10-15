@@ -1,6 +1,6 @@
 # The blog
 
-Starlite includes a Markdown blog, meant for articles around your site's subject (the "content"
+TinyTank includes a Markdown blog, meant for articles around your site's subject (the "content"
 part of an SEO strategy). Posts are files in `content/blog/`; there's no database and no admin.
 
 ## What you get
@@ -14,7 +14,7 @@ part of an SEO strategy). Posts are files in `content/blog/`; there's no databas
 
 The pages are built by `App\Controller\BlogController` and the templates in `templates/blog/` and
 `templates/_partials/blog-*.twig`. They're part of your site, so restyle or restructure them freely;
-the framework provides the data (`Starlite\Blog\Blog`) and the feed/sitemap controllers.
+the framework provides the data (`TinyTank\Blog\Blog`) and the feed/sitemap controllers.
 
 ## Where posts live
 
@@ -24,10 +24,10 @@ Each post is a folder named after its slug, filed by publication month, with its
 content/blog/
   2026/
     09/
-      hello-starlite/           → /blog/hello-starlite
+      hello-tinytank/           → /blog/hello-tinytank
         index.md                  the post (default language)
-        index.it.md               its Italian translation → /it/blog/hello-starlite
-        cover.png                 → /media/blog/hello-starlite/cover.png
+        index.it.md               its Italian translation → /it/blog/hello-tinytank
+        cover.png                 → /media/blog/hello-tinytank/cover.png
   drafts/
     next-post/                  only visible with APP_DEBUG=1, never deployed
       index.md

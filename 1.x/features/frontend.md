@@ -48,19 +48,19 @@ there.
 
 ## `vite.config.js`
 
-Your config only lists plugins. Starlite's part (entry points, the `datastar` and `starlite` import
+Your config only lists plugins. TinyTank's part (entry points, the `datastar` and `tinytank` import
 aliases, build output, manifest, the DDEV dev server, page reloads, the `VITE_PUBLIC_` env prefix) is
 a framework plugin:
 
 ```js
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
-import starlite from './vendor/starlite/framework/resources/vite/starlite.js';
+import tinytank from './vendor/tinytank/framework/resources/vite/tinytank.js';
 
 export default defineConfig({
     plugins: [
         tailwindcss(),
-        starlite(),
+        tinytank(),
     ],
 });
 ```
@@ -94,7 +94,7 @@ The skeleton's layout and CSS come with three things every site keeps, whatever 
   smooth scrolling (`@media (prefers-reduced-motion: reduce)` in `resources/css/app.css`).
 
 They're plain CSS and markup in your site, so adapt them freely; `tests/e2e/accessibility.spec.js`
-checks they keep working. Interactive components such as dialogs or toasts aren't part of Starlite:
+checks they keep working. Interactive components such as dialogs or toasts aren't part of TinyTank:
 native HTML (`<dialog>`, `<input type="range">`) with Datastar covers them, styled your way.
 
 ## Environment variables in JavaScript

@@ -106,7 +106,7 @@ In `config/app.php`, each `site` value is either the same for every language or 
 
 ```php
 'site' => [
-    'name' => 'Starlite',
+    'name' => 'TinyTank',
     'description' => [
         'en' => 'A database-free PHP micro framework for static-like dynamic sites.',
         'it' => 'Un micro framework PHP senza database per siti dinamici veloci come quelli statici.',
@@ -116,7 +116,7 @@ In `config/app.php`, each `site` value is either the same for every language or 
 ],
 ```
 
-They follow the page's language everywhere: titles (`About · Starlite`), the meta description, Open
+They follow the page's language everywhere: titles (`About · TinyTank`), the meta description, Open
 Graph, JSON-LD, the feed's title and subtitle, and `site.name` / `site.description` in templates
 (`$this->app->site->name()` in PHP).
 

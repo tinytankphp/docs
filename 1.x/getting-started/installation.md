@@ -2,7 +2,8 @@
 
 ## Requirements
 
-- **PHP 8.4** with the `intl`, `mbstring` and `opcache` extensions
+- **PHP 8.4** with the `intl`, `mbstring`, `xmlwriter` and `opcache` extensions (Composer checks all but
+  `opcache`), and **GD or Imagick** with WebP support for responsive images
 - **Composer 2**
 - **Node.js 22+** and npm, for the asset build
 - For local development: **[DDEV](https://ddev.com)** (recommended), which provides all of the above
@@ -10,7 +11,7 @@
 
 ## Create a site
 
-A Starlite site starts from the **skeleton**, [lab909/starlite](https://github.com/lab909/starlite).
+A TinyTank site starts from the **skeleton**, [tinytankphp/tinytank](https://github.com/tinytankphp/tinytank).
 On GitHub, click **Use this template** to create your site's own repository (without the
 skeleton's history), then clone it:
 
@@ -20,15 +21,24 @@ cd my-site
 ```
 
 ::: details Without GitHub's template button
+With Composer, which also installs the framework:
+
 ```sh
-git clone --depth 1 https://github.com/lab909/starlite.git my-site
+composer create-project tinytank/tinytank my-site
+cd my-site && git init
+```
+
+Or with git:
+
+```sh
+git clone --depth 1 https://github.com/tinytankphp/tinytank.git my-site
 cd my-site && rm -rf .git && git init
 ```
 :::
 
-The framework isn't part of the skeleton: it's the `starlite/framework` package, which Composer
-installs from [lab909/starlite-framework](https://github.com/lab909/starlite-framework) in the
-next step. It isn't on Packagist; the skeleton's `composer.json` already points Composer at GitHub.
+The framework isn't part of the skeleton: it's the `tinytank/framework` package, which Composer
+installs from [Packagist](https://packagist.org/packages/tinytank/framework) in the next step. Its
+source is [tinytankphp/framework](https://github.com/tinytankphp/framework).
 
 ## Configure
 
@@ -53,7 +63,7 @@ See [Configuration](../basics/configuration) for everything else.
 ```sh
 ddev config --project-name=my-site   # once, if you renamed the project
 ddev start
-ddev composer update                 # installs starlite/framework from GitHub
+ddev composer update                 # installs tinytank/framework from Packagist
 ddev npm install
 ddev npm run dev                     # Vite + Tailwind with hot reload
 ```

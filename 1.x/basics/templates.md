@@ -5,7 +5,7 @@ compiled to PHP classes in `var/cache/twig` (by `deploy` or on first use).
 
 ## The layout
 
-`templates/_layout.twig` is the page shell. Two parts of it matter to Starlite:
+`templates/_layout.twig` is the page shell. Two parts of it matter to TinyTank:
 
 ```twig
 <html lang="{{ site.language }}">
@@ -26,7 +26,7 @@ template, in the `seo` block that renders before the tags are printed:
 {% block seo %}{% do seo.title('About').description('Who we are.') %}{% endblock %}
 ```
 
-## What Starlite adds to Twig
+## What TinyTank adds to Twig
 
 | Name | Kind | Example |
 |---|---|---|

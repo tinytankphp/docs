@@ -81,4 +81,4 @@ In JavaScript, set it like any signal: `mergePatch({ _theme: 'dark' })`.
 ## Content Security Policy
 
 The script in `<head>` is the same on every page, so a policy can allow it by its hash instead of
-allowing all inline scripts. `Starlite\Theme::hash()` returns it, ready for `script-src`.
+allowing all inline scripts. `TinyTank\Theme::hash()` returns it, ready for `script-src`.

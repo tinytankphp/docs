@@ -39,7 +39,7 @@ Site-wide defaults (name, description, default image, author) come from `site` i
 
 ## Automatic metadata
 
-- **Blog posts** are mapped from front matter by `Starlite\Blog\PostSeo`: title, summary, image,
+- **Blog posts** are mapped from front matter by `TinyTank\Blog\PostSeo`: title, summary, image,
   `og:type=article` with dates and tags, and a `BlogPosting` JSON-LD block. Drafts get `noindex`.
 - **Error pages** get `noindex`.
 - **hreflang** links list the page in every language (or only where it exists, see
@@ -51,9 +51,9 @@ Three framework controllers, wired in `config/routes.php`:
 
 | URL | Controller | Content |
 |---|---|---|
-| `/sitemap.xml` | `Starlite\Seo\SitemapController` | every static GET page in every language, plus every published post version |
-| `/blog/feed.xml` | `Starlite\Blog\FeedController` | Atom feed of the 20 latest posts in the current language (`/it/blog/feed.xml`…) |
-| `/robots.txt` | `Starlite\Seo\RobotsController` | allows everything and points to the sitemap |
+| `/sitemap.xml` | `TinyTank\Seo\SitemapController` | every static GET page in every language, plus every published post version |
+| `/blog/feed.xml` | `TinyTank\Blog\FeedController` | Atom feed of the 20 latest posts in the current language (`/it/blog/feed.xml`…) |
+| `/robots.txt` | `TinyTank\Seo\RobotsController` | allows everything and points to the sitemap |
 
 "Static" pages are routes without placeholders or a file extension. Drafts and untranslated posts
 never appear.

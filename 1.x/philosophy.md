@@ -1,11 +1,11 @@
 # Philosophy
 
-A few principles explain most of Starlite's design decisions. Knowing them makes the rest of the
+A few principles explain most of TinyTank's design decisions. Knowing them makes the rest of the
 documentation predictable.
 
 ## Compile ahead of time
 
-Most of a website changes only when you deploy. Starlite moves the work there:
+Most of a website changes only when you deploy. TinyTank moves the work there:
 `bin/console deploy` compiles routes, templates, blog posts, translations and the asset manifest
 into PHP files, and the web server's Opcache keeps them in memory. At request time, PHP mostly
 looks things up.
@@ -20,10 +20,10 @@ secure, and a deploy is a file copy.
 
 ## Proven libraries, little glue
 
-Starlite doesn't reinvent infrastructure. Requests and responses come from
+TinyTank doesn't reinvent infrastructure. Requests and responses come from
 `symfony/http-foundation`, routing from `symfony/routing`, CSRF protection from
 `symfony/security-csrf`, Markdown from `league/commonmark`, structured data from
-`spatie/schema-org`, translations from `symfony/translation`, and assets from Vite. Starlite's own
+`spatie/schema-org`, translations from `symfony/translation`, and assets from Vite. TinyTank's own
 code is the layer that ties them together: the kernel, the Datastar Twig extension, the blog
 compiler, the Vite helper.
 
@@ -37,16 +37,16 @@ so a forged header can't poison a cached page.
 ## Fail loudly
 
 A misplaced post, a broken image link, a date that doesn't match its folder, a translation for a
-language that isn't configured: Starlite stops with a message naming the file, in the browser
+language that isn't configured: TinyTank stops with a message naming the file, in the browser
 during development and in `deploy`. Silent failures are the ones that reach production.
 
 ## The framework is a dependency
 
-A site starts from the skeleton and installs the framework (`starlite/framework`) with Composer.
-It extends Starlite from the outside, through `config/bootstrap.php`, `src/`, `templates/` and
+A site starts from the skeleton and installs the framework (`tinytank/framework`) with Composer.
+It extends TinyTank from the outside, through `config/bootstrap.php`, `src/`, `templates/` and
 `content/`, and never edits `vendor/`. Framework improvements reach every site with
-`composer update starlite/framework`.
-See [Building a site on Starlite](./extending/).
+`composer update tinytank/framework`.
+See [Building a site on TinyTank](./extending/).
 
 ## Content is asked for, not handed out
 
@@ -54,9 +54,9 @@ Templates get context automatically (`site`, `seo`, `datastar`), but never conte
 what they need, like Craft CMS's element queries (`posts().tag('php').limit(3).all()`). A template
 then shows at a glance which content it depends on. See [Querying content](./basics/querying).
 
-## Where Starlite stops
+## Where TinyTank stops
 
-Starlite is for sites whose content is files, edited by people comfortable with Markdown and git.
+TinyTank is for sites whose content is files, edited by people comfortable with Markdown and git.
 Its content types stay few and concrete: the **blog** for dated articles, **data collections** for
 repeating structured data (like Craft's channels), and **content pages** for one-offs (like
 Craft's singles, nested like a structure). There are no configurable "section types".

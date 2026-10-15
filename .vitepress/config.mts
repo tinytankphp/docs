@@ -1,16 +1,17 @@
 import { defineConfig } from 'vitepress';
 
-// Published on GitHub Pages under /starlite-framework-docs/; set DOCS_BASE=/ for a custom domain.
-const base = process.env.DOCS_BASE ?? '/starlite-framework-docs/';
-const repo = 'https://github.com/lab909/starlite-framework-docs';
+// Published on GitHub Pages at the custom domain https://tinytank.dev/ (the root). Without the
+// domain, Pages would serve it under /docs/: build with DOCS_BASE=/docs/ then.
+const base = process.env.DOCS_BASE ?? '/';
+const repo = 'https://github.com/tinytankphp/docs';
 
-// Each Starlite version gets its own folder (1.x/, later 2.x/…), so links never break.
+// Each TinyTank version gets its own folder (1.x/, later 2.x/…), so links never break.
 const v1 = '/1.x';
 
 export default defineConfig({
     base,
     lang: 'en-US',
-    title: 'Starlite',
+    title: 'TinyTank',
     description: 'A tiny, database-free PHP micro framework for static-like dynamic sites.',
     cleanUrls: true,
     markdown: {
@@ -29,14 +30,14 @@ export default defineConfig({
         nav: [
             { text: 'Guide', link: `${v1}/`, activeMatch: `^${v1}/(?!reference)` },
             { text: 'Reference', link: `${v1}/reference/config`, activeMatch: `^${v1}/reference/` },
-            { text: '1.x', items: [{ text: '1.x (current)', link: `${v1}/` }] },
+            { text: '1.x · 0.x beta', items: [{ text: '1.x (0.x beta, current)', link: `${v1}/` }] },
         ],
         sidebar: {
             [`${v1}/`]: [
                 {
                     text: 'Introduction',
                     items: [
-                        { text: 'What is Starlite?', link: `${v1}/` },
+                        { text: 'What is TinyTank?', link: `${v1}/` },
                         { text: 'Philosophy', link: `${v1}/philosophy` },
                     ],
                 },
@@ -87,12 +88,12 @@ export default defineConfig({
                 {
                     text: 'Extending',
                     items: [
-                        { text: 'Building a site on Starlite', link: `${v1}/extending/` },
+                        { text: 'Building a site on TinyTank', link: `${v1}/extending/` },
                         { text: 'Services & bootstrap', link: `${v1}/extending/bootstrap` },
                         { text: 'Console commands', link: `${v1}/extending/commands` },
                         { text: 'Deploy steps', link: `${v1}/extending/deploy-steps` },
                         { text: 'Writing a package', link: `${v1}/extending/packages` },
-                        { text: 'Updating Starlite', link: `${v1}/extending/updating` },
+                        { text: 'Updating TinyTank', link: `${v1}/extending/updating` },
                     ],
                 },
                 {
@@ -121,7 +122,7 @@ export default defineConfig({
         search: { provider: 'local' },
         outline: { level: [2, 3] },
         editLink: { pattern: `${repo}/edit/main/:path`, text: 'Edit this page on GitHub' },
-        socialLinks: [{ icon: 'github', link: 'https://github.com/lab909/starlite' }],
-        footer: { message: 'Starlite documentation' },
+        socialLinks: [{ icon: 'github', link: 'https://github.com/tinytankphp/tinytank' }],
+        footer: { message: 'TinyTank documentation' },
     },
 });

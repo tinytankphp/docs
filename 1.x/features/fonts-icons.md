@@ -100,7 +100,7 @@ found; keep the whole name in the template (for example in a map, as
 ### Your own icons
 
 Put SVG files in `resources/icons/` and use them as `icon-[app--<file name>]`; the skeleton's logo is
-`resources/icons/starlite.svg`, used as `icon-[app--starlite]`. Draw them on a square canvas, with
+`resources/icons/tinytank.svg`, used as `icon-[app--tinytank]`. Draw them on a square canvas, with
 `currentColor` (or a single colour) for strokes and fills. While the dev server runs, Vite restarts
 by itself when you add or change one.
 

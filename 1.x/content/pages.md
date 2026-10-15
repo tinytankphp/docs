@@ -71,7 +71,7 @@ content/pages/about/history/index.it.md    (no slug)              /it/chi-siamo/
 ```
 
 Child pages combine their parents' translated slugs. The folder path stays the page's identity:
-link with `path('page', {path: 'about/credits'})`, and Starlite writes `/about/credits` or
+link with `path('page', {path: 'about/credits'})`, and TinyTank writes `/about/credits` or
 `/it/chi-siamo/riconoscimenti` depending on the language. Each version's URL is its `uri` field.
 
 The untranslated URL (`/it/about/credits`) redirects permanently to the translated one, and the
@@ -168,7 +168,7 @@ skeleton's tests check it too.
 
 ## SEO and the sitemap
 
-`Starlite\Pages\PageSeo` (applied in `PageController`) sets the title, the summary as meta
+`TinyTank\Pages\PageSeo` (applied in `PageController`) sets the title, the summary as meta
 description, the share image and a `WebPage` JSON-LD block. Every page is in `/sitemap.xml` in each
 language it's written in, with `updated` as `lastmod`.
 

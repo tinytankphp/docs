@@ -1,6 +1,6 @@
 # Controllers
 
-Controllers live in `src/Controller/` and extend `Starlite\Controller`:
+Controllers live in `src/Controller/` and extend `TinyTank\Controller`:
 
 ```php
 <?php
@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Starlite\Controller;
+use TinyTank\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 final class BlogController extends Controller
@@ -27,7 +27,7 @@ final class BlogController extends Controller
 ```
 
 Each request creates a new controller, with the kernel as its only constructor argument
-(`$this->app`). Extending `Starlite\Controller` is optional, but it gives you the helpers below.
+(`$this->app`). Extending `TinyTank\Controller` is optional, but it gives you the helpers below.
 
 ## What an action returns
 
@@ -58,7 +58,7 @@ visits are answered with a `304`.
 
 ## The kernel
 
-`$this->app` is the `Starlite\Kernel`. Its most useful parts:
+`$this->app` is the `TinyTank\Kernel`. Its most useful parts:
 
 | Property / method | |
 |---|---|

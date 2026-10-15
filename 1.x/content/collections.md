@@ -64,8 +64,8 @@ Each item is a file in `content/<collection>/`, named after its slug:
 
 ```
 content/faq/
-  what-is-starlite.md       front matter = the fields, then an optional Markdown body
-  what-is-starlite.it.md    Italian version
+  what-is-tinytank.md       front matter = the fields, then an optional Markdown body
+  what-is-tinytank.it.md    Italian version
 content/team/
   ada.yaml                  fields only
 ```
@@ -74,7 +74,7 @@ A Markdown item:
 
 ```md
 ---
-question: What is Starlite?
+question: What is TinyTank?
 order: 1
 ---
 A small PHP framework for sites that are mostly content…

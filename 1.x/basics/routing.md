@@ -5,7 +5,7 @@ Routes are declared in `config/routes.php`, which returns a function receiving t
 ```php
 use App\Controller\BlogController;
 use App\Controller\HomeController;
-use Starlite\Kernel;
+use TinyTank\Kernel;
 
 return static function (Kernel $app): void {
     $app->get('/', HomeController::class, 'home');
@@ -75,7 +75,7 @@ Routes without a name get one generated from the method and path, but you can't 
 
 ## Languages
 
-Route paths are language-neutral: you declare `/about` once, and Starlite also serves `/it/about`
+Route paths are language-neutral: you declare `/about` once, and TinyTank also serves `/it/about`
 for every other configured language. See [Languages](../features/languages).
 
 ## Responses to unknown routes
@@ -92,5 +92,5 @@ Without `APP_DEBUG`, the router is compiled into `var/cache/routes.*.php` on fir
 
 ## The built-in route
 
-Starlite registers one route itself: `/datastar`, the endpoint behind `datastar.get(…)` and friends
+TinyTank registers one route itself: `/datastar`, the endpoint behind `datastar.get(…)` and friends
 (see [Datastar](./datastar)). Don't reuse that path.

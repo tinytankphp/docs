@@ -2,7 +2,7 @@
 
 ## CSRF protection
 
-POST, PUT, PATCH and DELETE requests must come from your own site. Starlite uses Symfony's
+POST, PUT, PATCH and DELETE requests must come from your own site. TinyTank uses Symfony's
 [`SameOriginCsrfTokenManager`](https://symfony.com/doc/current/security/csrf.html#stateless-csrf-tokens):
 the browser's `Sec-Fetch-Site` header (or `Origin` / `Referer`) must show the request came from this
 site, otherwise it gets a **403**.
@@ -120,7 +120,7 @@ and sources containing spaces, `;` or `,` are refused, so a typo can't silently 
 
 To try a change without breaking anything, set `report_only` to `true`: browsers then only report
 what they would block, in the developer console. A controller can send its own
-`Content-Security-Policy` header for one page; Starlite then leaves it alone.
+`Content-Security-Policy` header for one page; TinyTank then leaves it alone.
 
 ### Sources for one page
 
@@ -139,3 +139,10 @@ $app->csp->allowScript("console.log('updated')");
 ```
 
 Patching elements and signals needs nothing in the policy, so prefer those.
+
+## Reporting a vulnerability
+
+Please report security problems privately, not in a public issue: the framework repository's
+**Security** tab → [Report a vulnerability](https://github.com/tinytankphp/framework/security/advisories/new).
+See its [security policy](https://github.com/tinytankphp/framework/blob/main/SECURITY.md).
+

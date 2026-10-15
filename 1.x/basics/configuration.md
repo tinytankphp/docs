@@ -1,6 +1,6 @@
 # Configuration
 
-Starlite has two places for settings:
+TinyTank has two places for settings:
 
 - **`config/app.php`**: the site's settings, committed to the repository.
 - **Environment variables**: per-server values and secrets, never committed. In development they
@@ -43,7 +43,7 @@ return [
     'blog' => ['per_page' => 20],
 
     'site' => [
-        'name' => 'Starlite',
+        'name' => 'TinyTank',
         'description' => 'A database-free PHP micro framework…',
         'image' => null,   // default share image, e.g. '/images/og-default.png'
         'author' => null,  // for blog posts and the feed; defaults to the site name

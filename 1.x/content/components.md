@@ -118,15 +118,15 @@ them together.
 Templates are looked up in order:
 
 1. the site's `templates/`
-2. templates added by packages, with `$app->addTemplates()` (see [Writing a Starlite package](../extending/packages))
-3. the framework's defaults, also reachable as `@starlite/…`
+2. templates added by packages, with `$app->addTemplates()` (see [Writing a TinyTank package](../extending/packages))
+3. the framework's defaults, also reachable as `@tinytank/…`
 
 So a site overrides any component, from a package or the framework, by creating a file with the same
 name in `templates/_components/`. An override can extend the original:
 
 ```twig
 {# templates/_components/youtube.twig #}
-{% extends '@starlite/_components/youtube.twig' %}
+{% extends '@tinytank/_components/youtube.twig' %}
 ```
 
 ## Allowing sources for a component

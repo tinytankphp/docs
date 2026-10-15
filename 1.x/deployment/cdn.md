@@ -1,7 +1,7 @@
 # CDN caching
 
 A CDN (Cloudflare, Bunny, Fastly…) keeps copies of your pages on servers around the world and answers
-visitors from the closest one. Starlite can tell it which pages to keep and for how long. You get:
+visitors from the closest one. TinyTank can tell it which pages to keep and for how long. You get:
 
 - **Speed everywhere:** a visitor far from your server gets the page from a nearby edge server,
   without the round trip to yours.
@@ -48,7 +48,7 @@ because `deploy` then clears it. **Without purging it's 5 minutes**, so a change
 
 ## What's never kept at the CDN
 
-Starlite decides most of this by itself:
+TinyTank decides most of this by itself:
 
 | What | Why |
 |---|---|
@@ -78,7 +78,7 @@ cdn: false                  # a content page that changes more often than you de
 `$this->app->cdn->skip()` does the same for the current response.
 
 ::: warning Pages that differ per visitor
-Anything shown to one visitor only (an account page, "Hi Ada") must never be `public`. Starlite has no
+Anything shown to one visitor only (an account page, "Hi Ada") must never be `public`. TinyTank has no
 logins today; code that adds them must exclude those routes, or send `Cache-Control: private`.
 :::
 
@@ -140,10 +140,10 @@ if [ $# -eq 0 ]; then mycdn purge --all; else mycdn purge "$@"; fi
 
 ### Another CDN as a package
 
-A package can add a CDN with a class implementing `Starlite\Cdn\Purger`:
+A package can add a CDN with a class implementing `TinyTank\Cdn\Purger`:
 
 ```php
-use Starlite\Cdn\Purger;
+use TinyTank\Cdn\Purger;
 
 final class FastlyPurger implements Purger
 {
@@ -178,7 +178,7 @@ the CDN's current documentation; the gist:
 
 - **Cloudflare** doesn't cache HTML pages by default, only files like images and scripts. Add a
   **Cache Rule** for your site: "Eligible for cache", with the edge TTL taken from the origin's
-  `Cache-Control`. From then on it follows Starlite's headers. Its "Always Online" option also serves
+  `Cache-Control`. From then on it follows TinyTank's headers. Its "Always Online" option also serves
   pages while your server is down.
 - **Bunny**: in the pull zone's caching settings, set the cache expiration to **respect the origin's
   Cache-Control**, and turn on the **stale cache** options (serve while updating, serve while the
@@ -203,4 +203,4 @@ visitor's IP address and the pages they ask for. That makes it a data processor 
 - check what it logs, and turn off what you don't need: many CDNs keep request logs, and some add
   analytics or bot-detection scripts and cookies to pages unless you switch them off.
 
-Starlite's own [log](../features/logging) still records nothing about visitors.
+TinyTank's own [log](../features/logging) still records nothing about visitors.

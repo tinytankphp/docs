@@ -11,7 +11,7 @@ here:
 
 declare(strict_types=1);
 
-use Starlite\Kernel;
+use TinyTank\Kernel;
 
 return static function (Kernel $app): void {
     // Services
@@ -85,6 +85,6 @@ final class AppExtension extends AbstractExtension
 
 ## Other kernel parts
 
-The kernel exposes Starlite's own services, which you can use (but not replace) from bootstrap:
+The kernel exposes TinyTank's own services, which you can use (but not replace) from bootstrap:
 `$app->twig`, `$app->blog`, `$app->seo`, `$app->site`, `$app->router`, `$app->translations`,
 `$app->vite`, `$app->datastar`. See the [PHP API reference](../reference/php).

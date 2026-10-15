@@ -11,7 +11,7 @@ composer analyse       # PHPStan, level 8
 | Suite | Where | What it tests |
 |---|---|---|
 | **app** | your site's `tests/` | your site's controllers, routes and templates, with fixture content |
-| **framework** | the framework repository's `tests/` | Starlite itself, against a fixture project and fixture content (see [Contributing](./contributing)) |
+| **framework** | the framework repository's `tests/` | TinyTank itself, against a fixture project and fixture content (see [Contributing](./contributing)) |
 
 Your site runs its own suite; the framework's suite runs in the framework repository's CI.
 
@@ -39,14 +39,14 @@ final class AboutPageTest extends AppTestCase
 }
 ```
 
-`AppTestCase` (in your `tests/`) extends the framework's `Starlite\Testing\KernelTestCase` and
+`AppTestCase` (in your `tests/`) extends the framework's `TinyTank\Testing\KernelTestCase` and
 boots your site with the fixture content in `tests/data/content`, one post per page and a
 temporary cache directory. The helpers:
 
 | Helper | |
 |---|---|
 | `$this->app($debug = false, $overrides = [])` | boots the site; overrides merge over `config/app.php` (`AppTestCase`) |
-| `$this->bootKernel($root, $debug, $overrides)` | boots any Starlite app with a temporary cache directory (`KernelTestCase`) |
+| `$this->bootKernel($root, $debug, $overrides)` | boots any TinyTank app with a temporary cache directory (`KernelTestCase`) |
 | `$this->request($app, $uri, $method, $headers, $body)` | handles a request |
 | `self::body($response)` | the body of any response, including Datastar streams and files |
 | `$this->datastarUrl($html, $template)` | the Datastar URL rendering `$template`, from a page |

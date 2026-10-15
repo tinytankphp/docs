@@ -16,7 +16,7 @@ return static function (Kernel $app): void {
 ```
 
 The third argument is the route's **name**: templates link to it with `path('about')`, and
-Starlite takes care of the language prefix (`/it/about` on Italian pages).
+TinyTank takes care of the language prefix (`/it/about` on Italian pages).
 
 ## 2. The controller
 
@@ -29,7 +29,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Starlite\Controller;
+use TinyTank\Controller;
 
 final class AboutController extends Controller
 {
@@ -89,5 +89,5 @@ links tie the two languages together.
 ## Next
 
 - [Routing](../basics/routing): parameters, requirements, methods
-- [Templates](../basics/templates): every Twig function Starlite adds
+- [Templates](../basics/templates): every Twig function TinyTank adds
 - [Datastar](../basics/datastar): make the page interactive

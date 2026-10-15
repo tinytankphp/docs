@@ -1,10 +1,10 @@
-# Updating Starlite
+# Updating TinyTank
 
-The framework is the `starlite/framework` Composer package, so updating it never touches your
+The framework is the `tinytank/framework` Composer package, so updating it never touches your
 site's files:
 
 ```sh
-ddev composer update starlite/framework
+ddev composer update tinytank/framework
 ```
 
 Then run your checks and look at the result before deploying:
@@ -16,35 +16,40 @@ ddev composer analyse
 
 ## Versions
 
-Starlite is in beta. Until the first tagged release, the skeleton requires the development branch:
+TinyTank is in **beta (0.x)**. Releases are tagged (`v0.1.0`…) and listed, with what to change in
+your site, in the [CHANGELOG](https://github.com/tinytankphp/framework/blob/main/CHANGELOG.md).
+The skeleton requires:
 
 ```json
-"require": { "starlite/framework": "^1.0@dev" }
+"require": { "tinytank/framework": "^0.1@dev" },
+"prefer-stable": true
 ```
 
-`dev-main` is aliased as `1.x-dev`, so `^1.0@dev` follows the `main` branch of
-[lab909/starlite-framework](https://github.com/lab909/starlite-framework). Once releases are
-tagged (`v1.0.0`…), switch to `^1.0` to receive only tagged versions within 1.x. A future 2.x would
-need a deliberate change of the constraint, with its own [documentation version](/).
+`^0.1` means any 0.1.x release: fixes only. With `prefer-stable`, `composer update` installs the
+latest **tagged** one; `@dev` only lets maintainers work against the `main` branch (see Contributing).
+While TinyTank is 0.x, a new minor version (0.2.0) may change behaviour: move to it deliberately, by
+changing the constraint to `^0.2@dev` after reading its changelog entry. From 1.0, `^1.0` will
+follow every compatible release, and a future 2.x will get its own [documentation version](/).
+
+These docs (`/1.x/`) describe the 0.x betas leading to 1.0.
 
 Your `composer.lock` records the exact framework commit, so every server installs the version you
 tested. Commit it after each update.
 
 ## Where the package comes from
 
-Starlite isn't on Packagist. The skeleton's `composer.json` points Composer at GitHub:
+The framework is on [Packagist](https://packagist.org/packages/tinytank/framework), Composer's
+default source. The skeleton's `composer.json` also lists a local folder:
 
 ```json
 "repositories": [
-    { "type": "path", "url": "packages/*", "options": { "symlink": true } },
-    { "type": "vcs", "url": "https://github.com/lab909/starlite-framework" }
+    { "type": "path", "url": "packages/*", "options": { "symlink": true } }
 ]
 ```
 
-The first entry is for Starlite maintainers, who work on the framework in a local clone in
-`packages/` (see [Contributing](../contributing)). In your site, `packages/` stays empty and
-Composer uses GitHub. You can delete the first entry and the `packages/` folder if you never work on
-the framework itself.
+It's for TinyTank maintainers, who work on the framework in a local clone in `packages/` (see
+[Contributing](../contributing)). In your site, `packages/` stays empty and Composer uses Packagist.
+You can delete the entry and the `packages/` folder if you never work on the framework itself.
 
 ## Skeleton changes
 

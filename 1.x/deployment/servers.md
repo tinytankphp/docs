@@ -40,7 +40,7 @@ success even when they can't reach PHP-FPM.
 
 ### reload mode
 
-Give the deploy user passwordless sudo for that one command only, in `/etc/sudoers.d/starlite`:
+Give the deploy user passwordless sudo for that one command only, in `/etc/sudoers.d/tinytank`:
 
 ```
 deploy ALL=(root) NOPASSWD: /usr/bin/systemctl reload php8.4-fpm
@@ -142,7 +142,7 @@ access too.
 
 ## Access logs
 
-Starlite's own [log](../features/logging) records nothing about visitors, but web servers keep an
+TinyTank's own [log](../features/logging) records nothing about visitors, but web servers keep an
 **access log** of every request by default, with the visitor's IP address, the full URL with its
 query string, the referrer and the browser. That's personal data, kept for as long as the server's
 log rotation says (often weeks or months).
