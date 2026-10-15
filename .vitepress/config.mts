@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress';
 
-// Published on GitHub Pages at the custom domain https://tinytank.dev/ (the root). Without the
+// Published on GitHub Pages at the custom domain https://docs.tinytank.dev/ (the root). Without the
 // domain, Pages would serve it under /docs/: build with DOCS_BASE=/docs/ then.
 const base = process.env.DOCS_BASE ?? '/';
 const repo = 'https://github.com/tinytankphp/docs';
