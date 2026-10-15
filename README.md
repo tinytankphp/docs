@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="https://tinytank.dev/"><img src="https://docs.tinytank.dev/logo-full.svg" alt="TinyTank" width="240"></a>
+</p>
+
 # TinyTank documentation
 
 Source of the TinyTank docs, built with [VitePress](https://vitepress.dev) and published to GitHub

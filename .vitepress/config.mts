@@ -23,7 +23,12 @@ export default defineConfig({
         },
     },
     lastUpdated: true,
-    head: [['link', { rel: 'icon', type: 'image/svg+xml', href: `${base}logo.svg` }]],
+    head: [
+        // The tank on a square canvas; favicon.ico (16, 32, 48 px) for browsers without SVG favicons.
+        ['link', { rel: 'icon', type: 'image/svg+xml', href: `${base}favicon.svg` }],
+        ['link', { rel: 'icon', href: `${base}favicon.ico`, sizes: '48x48' }],
+        ['link', { rel: 'apple-touch-icon', href: `${base}apple-touch-icon.png` }],
+    ],
 
     themeConfig: {
         logo: '/logo.svg',
