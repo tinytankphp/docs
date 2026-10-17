@@ -49,6 +49,33 @@ strikethrough and autolinks. Headings get anchor links. External links open in a
 For safety, **raw HTML is escaped** and `javascript:` links are removed, so a content file can
 never inject scripts into the page.
 
+### Code blocks
+
+Name the language after the opening fence, and the code is **highlighted when content compiles**:
+no JavaScript, nothing loaded from another site.
+
+````md
+```php
+echo 'Hello';
+```
+````
+
+```html
+<pre data-lang="php"><code class="language-php"><span class="hl-keyword">echo</span> <span class="hl-value">'Hello'</span>;</code></pre>
+```
+
+Languages ([tempest/highlight](https://github.com/tempestphp/highlight)): `php`, `twig`, `html`,
+`css`, `scss`, `js`, `ts`, `json`, `yaml`, `bash` (or `sh`), `terminal`, `sql`, `nginx`, `apache`,
+`dotenv`, `dockerfile`, `diff`, `markdown`, `xml`, `ini`, `http`, `graphql`, `python`, `vue`,
+`svelte`, `blade`, `terraform`. A block without a language, or in another one, is shown as plain
+text in the same markup.
+
+The colours are the site's: the skeleton styles the `hl-*` classes at the end of
+`resources/css/app.css` (`hl-keyword`, `hl-property`, `hl-value`, `hl-type`, `hl-number`,
+`hl-variable`, `hl-attribute`, `hl-comment`, `hl-addition`, `hl-deletion`…), and shows the language
+from `data-lang` in the corner. The theme files in `vendor/tempest/highlight/src/Themes/Css/` (GitHub,
+Dracula, Monokai…) use the same classes, for ideas. Inline `` `code` `` isn't highlighted.
+
 ## Images and files
 
 Put images and files next to `index.md` (subfolders are fine) and link them relatively:
