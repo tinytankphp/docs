@@ -37,7 +37,7 @@ each of them:
 
 | What | Where | Tests that check it |
 |---|---|---|
-| The home page, with Datastar demos (live search, a server clock, a like button) | `templates/index.twig`, `src/Controller/HomeController.php` and `ClockController.php`, `templates/_partials/clock.twig`, `like.twig` and `search.twig`, `resources/js/pages/home.js`, the `/clock` route in `config/routes.php` (and `clock` in `cdn.exclude`) | `tests/PagesTest.php` (home, clock, like), `tests/e2e/datastar.spec.js`, `tests/e2e/persist.spec.js` |
+| The home page, with Datastar demos (live search, a server clock, a like button) | `templates/index.twig`, `src/Controller/HomeController.php` and `ClockController.php`, `templates/_partials/clock.twig`, `like.twig` and `search.twig`, `resources/js/pages/home.js`, the `/clock` route in `config/routes.php` (and `clock` in `cdn.exclude`) | `tests/PagesTest.php` (home, clock, like, and `testPageScriptsLoadOnlyWhereTheyAreUsed`, which only runs once there's a build), `tests/e2e/datastar.spec.js`, `tests/e2e/persist.spec.js` |
 | Two blog posts and a draft | `content/blog/2026/09/`, `content/blog/drafts/` | `tests/PagesTest.php`, and the browser tests that open a post (`accessibility`, `images`, `no-javascript`, `video`); the blog's own tests use `tests/data/content/` and keep working |
 | An FAQ, as a data collection | `content/faq/`, `config/collections.php` | none (the home page lists it) |
 | Pages: About (with a child page), Contact (with its form) and Privacy | `content/pages/`; Contact and Privacy are worth adapting rather than deleting | `tests/PagesTest.php`, `tests/ContactTest.php`, `tests/CdnTest.php`, `tests/e2e/contact.spec.js`, `tests/e2e/languages.spec.js` |
@@ -52,8 +52,9 @@ you delete or change one, update the tests listed next to it, then run `ddev com
 The skeleton is in English and Italian. For one language:
 
 1. In `config/app.php`, list only your language in `languages` (and set `language` to it).
-2. Delete the other language's files: `translations/it.php`, and its content versions
-   (`find content -name '*.it.md' -delete`).
+2. Delete the other language's files: `translations/it.php`, and its content versions, including
+   the tests' own content (`find content tests/data/content -name '*.it.md' -delete`): a translation
+   in a language that isn't configured is an error.
 3. Delete or adapt the tests about the second language: `tests/e2e/languages.spec.js`, and the
    `/it/…` requests in `tests/PagesTest.php`, `tests/ContactTest.php`, `tests/CdnTest.php`,
    `tests/BlogPagesTest.php` and `tests/e2e/contact.spec.js`.

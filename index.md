@@ -28,5 +28,9 @@ features:
   - title: A skeleton and a package
     details: Start a site from the skeleton; the framework is a Composer package you update, never edit. Commands, services, Twig extensions and deploy steps plug in from the app.
   - title: Tested and analysed
-    details: 130+ tests across the framework and the app, PHPStan level 8, and a CI workflow from day one.
+    details: Hundreds of tests across the framework and the app, browser tests, PHPStan level 8, and CI from day one.
+  - title: Ready for coding agents
+    details: Every new site comes with an AGENTS.md for coding agents, and these docs are available as llms.txt and llms-full.txt, with a Markdown version of every page.
+    link: /1.x/getting-started/installation#next-steps
+    linkText: How to use them
 ---

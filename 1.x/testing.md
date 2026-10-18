@@ -72,6 +72,12 @@ public function testThePageScriptLoads(): void
 
 CI runs `npm run build` before the tests, so these run there.
 
+::: tip A test gets a 500?
+`$this->app()` boots in production mode, like the live site: an exception becomes the generic error
+page. Boot with `$this->app(debug: true)` to get the exception itself in the test output, or read
+what was logged with `$this->logged()`.
+:::
+
 ## Requests with headers
 
 ```php
