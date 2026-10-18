@@ -12,69 +12,57 @@
 ## Create a site
 
 A TinyTank site starts from the **skeleton**, [tinytankphp/tinytank](https://github.com/tinytankphp/tinytank).
-On GitHub, click **Use this template** to create your site's own repository (without the
-skeleton's history), then clone it:
-
-```sh
-git clone git@github.com:you/my-site.git
-cd my-site
-```
-
-::: details Without GitHub's template button
-With Composer, which also installs the framework:
+With Composer:
 
 ```sh
 composer create-project tinytank/tinytank my-site
 cd my-site && git init
 ```
 
-Or with git:
+Composer copies the skeleton, installs the framework (the `tinytank/framework` package, from
+[Packagist](https://packagist.org/packages/tinytank/framework)), then **prepares the site** for you:
+
+- names it after its folder: `composer.json`, `package.json`, the DDEV project (`my-site.ddev.site`);
+- creates `.env` with a fresh `APP_SECRET`, the local address and debug mode on;
+- lets git track `composer.lock`, so every server installs exactly what you tested;
+- points CI at that lock file, and removes the files about developing TinyTank itself
+  (`ROADMAP.md`, `CONTRIBUTING.md`, TinyTank's `LICENSE` and `SECURITY.md`).
+
+::: details With GitHub's "Use this template" button
+On [tinytankphp/tinytank](https://github.com/tinytankphp/tinytank), click **Use this template** to
+create your site's repository, clone it, then run the preparation yourself, once:
 
 ```sh
-git clone --depth 1 https://github.com/tinytankphp/tinytank.git my-site
-cd my-site && rm -rf .git && git init
+git clone git@github.com:you/my-site.git && cd my-site
+php bin/create-site.php
 ```
 :::
 
-The framework isn't part of the skeleton: it's the `tinytank/framework` package, which Composer
-installs from [Packagist](https://packagist.org/packages/tinytank/framework) in the next step. Its
-source is [tinytankphp/framework](https://github.com/tinytankphp/framework).
-
 ## Configure
 
-Copy the example environment file and fill it in:
-
-```sh
-cp .env.example .env
-```
+`.env` holds the settings that differ per machine; the preparation step filled in the essentials:
 
 ```ini
-APP_SECRET=…                                  # openssl rand -hex 32
+APP_SECRET=…                                  # signs Datastar requests; generated for you
 APP_URL=https://my-site.ddev.site             # your site's public URL, no trailing slash
 APP_DEBUG=1                                   # development mode
 ```
 
-`APP_SECRET` signs Datastar requests; `APP_URL` is used for every absolute URL (canonical links,
-Open Graph, sitemap, feeds). Both are required: the app refuses to boot without them.
-See [Configuration](../basics/configuration) for everything else.
+`APP_URL` is used for every absolute URL (canonical links, Open Graph, sitemap, feeds). Both
+`APP_SECRET` and `APP_URL` are required: the app refuses to boot without them. A new secret:
+`openssl rand -hex 32`. See [Configuration](../basics/configuration) for everything else.
 
 ## Run it with DDEV
 
 ```sh
-ddev config --project-name=my-site   # once, if you renamed the project
 ddev start
-ddev composer update                 # installs tinytank/framework from Packagist
+ddev composer install                # after the template button: ddev composer update
 ddev npm install
 ddev npm run dev                     # Vite + Tailwind with hot reload
 ```
 
 Open `https://my-site.ddev.site`. Editing a template, a post or a translation reloads the page;
 CSS changes apply without a reload.
-
-::: tip Commit your lock file
-The skeleton doesn't commit `composer.lock`. Your site should: remove the `/composer.lock` line
-from `.gitignore` and commit the file, so every server installs exactly the versions you tested.
-:::
 
 ::: details Without DDEV
 Any PHP 8.4 setup works. Point the web server's document root at `public/` and send every request
@@ -96,24 +84,8 @@ ddev composer test       # your site's tests (PHPUnit)
 ddev composer analyse    # PHPStan
 ```
 
-## Starter content
-
-The skeleton comes with examples, so you can see how things fit together. Keep, adapt or delete
-each of them:
-
-| What | Where |
-|---|---|
-| The home page, with Datastar demos (live search, a server clock, a like button) | `templates/index.twig`, `src/Controller/HomeController.php` and `ClockController.php`, `templates/_partials/clock.twig` and `like.twig`, the `/clock` route in `config/routes.php` |
-| Two blog posts and a draft | `content/blog/2026/09/`, `content/blog/drafts/` |
-| An FAQ, as a data collection | `content/faq/`, `config/collections.php` |
-| Pages: About (with a child page), Contact (with its form) and Privacy | `content/pages/`; Contact and Privacy are worth adapting rather than deleting |
-| **A style guide**: every element a post or page can contain, for designing the site | `content/pages/style-guide/`, an [unlisted](../content/pages#unlisted-pages) page at `/style-guide` |
-| The logo icon, favicon and site name | `resources/icons/tinytank.svg`, `public/favicon.svg`, `site` in `config/app.php` |
-
-The skeleton's tests (`tests/`) check some of these examples: when you delete one, delete or adapt
-its test too.
-
 ## Next steps
 
+- [Starting a site](./checklist): the checklist for your first hours with a new site
 - [Project structure](./structure): where everything lives
 - [Your first page](./first-page): a route, a controller and a template in five minutes

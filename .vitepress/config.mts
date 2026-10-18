@@ -50,6 +50,7 @@ export default defineConfig({
                     text: 'Getting started',
                     items: [
                         { text: 'Installation', link: `${v1}/getting-started/installation` },
+                        { text: 'Starting a site', link: `${v1}/getting-started/checklist` },
                         { text: 'Project structure', link: `${v1}/getting-started/structure` },
                         { text: 'Your first page', link: `${v1}/getting-started/first-page` },
                     ],

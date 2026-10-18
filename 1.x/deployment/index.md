@@ -49,17 +49,18 @@ post and page files published to `public/media/`, which would otherwise shadow t
 
 ## Production checklist
 
-- [ ] Keep `var/images/` between deploys (encoded images are reused from there)
-
-- [ ] `MAILER_DSN`, `MAILER_FROM` and `CONTACT_TO` for the contact form (send yourself a test message)
-
 - [ ] `.env` (or real environment variables) with `APP_URL`, `APP_SECRET`; `APP_DEBUG` unset
-- [ ] PHP 8.4 with `intl`, `mbstring`, `opcache`; `display_errors=Off`, `log_errors=On`
+- [ ] PHP 8.4 with `intl`, `mbstring`, `xmlwriter`, `opcache`, and GD or Imagick with WebP;
+      `display_errors=Off`, `log_errors=On`
 - [ ] web server root at `public/`, everything else routed to `public/index.php`
 - [ ] `var/cache` writable by the deploy user and readable by PHP; `var/log` writable by PHP
-- [ ] Behind a CDN: `CDN_CACHE=1` and `CDN_PURGE` with its credentials ([CDN caching](./cdn)), and the CDN
-      in your privacy policy
-- [ ] `LOG_ALERT_TO` to hear about errors by email ([Logging](../features/logging)), and the web
-      server's access log turned off or without IP addresses ([Access logs](./servers#access-logs))
+- [ ] keep `var/images/` between deploys (encoded images are reused from there)
 - [ ] the Opcache mode for this server (`APP_OPCACHE`), see [Servers & Opcache](./servers)
 - [ ] HTTPS, and `APP_TRUSTED_PROXIES` if behind a proxy or load balancer
+- [ ] `MAILER_DSN`, `MAILER_FROM` and `CONTACT_TO` for the contact form (send yourself a test message)
+- [ ] `LOG_ALERT_TO` to hear about errors by email ([Logging](../features/logging)), and the web
+      server's access log turned off or without IP addresses ([Access logs](./servers#access-logs))
+- [ ] behind a CDN: `CDN_CACHE=1` and `CDN_PURGE` with its credentials ([CDN caching](./cdn)), and the
+      CDN in your privacy policy
+- [ ] the [style guide](../getting-started/checklist#the-style-guide) at `/style-guide`: still wanted on
+      the live site?
