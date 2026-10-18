@@ -46,9 +46,41 @@ template, in the `seo` block that renders before the tags are printed:
 | `site` | global | `site.name`, `site.language`, `site.locale` |
 | `seo` | global | `{% do seo.title('…') %}` |
 | `datastar` | global | `datastar.get('_partials/search')` ([Datastar](./datastar)) |
+| `globals` | global | your own values from `config/globals.php`: `globals.socials.github` (below) |
 
 Plus the Datastar tags `patch_elements`, `patch_signals`, `remove_elements`, `execute_script` and
 `location` used in partials. The [Twig reference](../reference/twig) has every signature.
+
+## Global values
+
+Values every template needs, such as social links, a phone number or an address, go in
+`config/globals.php` rather than being repeated in templates (like Craft's globals):
+
+```php
+<?php // config/globals.php
+
+return [
+    'socials' => [
+        'github' => 'https://github.com/example',
+        'x' => 'https://x.com/example',
+    ],
+    'phone' => '+39 06 1234 5678',
+];
+```
+
+```twig
+<a href="{{ globals.socials.github }}">GitHub</a>
+{% for name, url in globals.socials %}<a href="{{ url }}">{{ name }}</a>{% endfor %}
+```
+
+The array can be nested as deep as you like. The file is optional, and it's plain PHP: a value can
+come from the environment (`getenv('SHOP_URL') ?: 'https://shop.example.com'`). Controllers and
+commands read the same values as `$app->globals`.
+
+::: warning Public values
+Whatever `globals` holds can end up in a page, so never put secrets there: they belong in `.env`.
+Values that change by language are better as translations (`{{ 'Opening hours'|t }}`).
+:::
 
 ## Partials
 

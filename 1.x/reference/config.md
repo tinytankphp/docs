@@ -46,6 +46,11 @@ See [Data collections](../content/collections).
 Forms and their fields, recipients and spam checks: `name => ['fields' => […], 'to' => …, 'subject' => …, 'reply_to' => …, 'spam' => […]]`.
 See [Forms](../features/forms).
 
+## `config/globals.php`
+
+Optional: values for every template, as `globals` (and `$app->globals` in PHP). Returns an array,
+nested as deep as you like. Public: no secrets. See [Global values](../basics/templates#global-values).
+
 ## Overrides
 
 `Kernel::boot($root, $debug, $overrides)` merges `$overrides` over the file. These extra keys are
@@ -57,4 +62,5 @@ only meant for overrides (mostly in tests):
 | `cache_dir` | `<root>/var/cache` | where compiled caches are written |
 | `collections` | `config/collections.php` | collection definitions, instead of the file |
 | `forms` | `config/forms.php` | form definitions, instead of the file |
+| `globals` | `config/globals.php` | template globals, instead of the file |
 | `images_dir` | `<root>/var/images` | where encoded images are kept (tests use a temporary folder) |

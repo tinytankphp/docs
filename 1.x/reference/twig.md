@@ -7,6 +7,7 @@
 | `site` | `TinyTank\Site` | `site.name`, `site.description` (in the current language), `site.baseUrl`, `site.language`, `site.locale`, `site.defaultLanguage`, `site.languages`, `site.path` (the current page's path without the language prefix, for menus: `site.path starts with '/projects'`) |
 | `seo` | `TinyTank\Seo\Seo` | page metadata setters: `{% do seo.title('…') %}` (see [SEO](../features/seo)) |
 | `datastar` | `TinyTank\Datastar` | Datastar actions, below |
+| `globals` | `array` | your own values from `config/globals.php` (empty without it): `globals.socials.github` (see [Global values](../basics/templates#global-values)) |
 
 Plus anything your `config/bootstrap.php` adds.
 

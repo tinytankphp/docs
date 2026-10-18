@@ -56,7 +56,9 @@ always treated as a factory, so to store a closure itself, wrap it in a factory.
 
 ## Twig extensions
 
-Anything Twig supports can be added in bootstrap: extensions, globals, functions, filters.
+Anything Twig supports can be added in bootstrap: extensions, globals, functions, filters. Plain
+values (links, an email address) are simpler in [`config/globals.php`](../basics/templates#global-values),
+under `globals`.
 
 ```php
 use Twig\TwigFilter;

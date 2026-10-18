@@ -59,6 +59,11 @@ is the whole pattern.
 | `orderBy('field [asc\|desc], …')` | replaces the default order: `'title'`, `'date desc'`, `'order, name'`. Items without a value come last; text is compared naturally ("Item 9" before "Item 10") and case-insensitively |
 | `limit(n)`, `offset(n)` | a slice of the results |
 
+`where()`, `orderBy()` and `countBy()` also reach a value inside a field by its path: a page's
+`data` (`where('data.featured', true)`, `orderBy('data.date desc')`) or a collection's `array` field
+(`where('address.city', 'Rome')`). Only the field itself (`data`, `address`) is checked; a missing
+value counts as `null`.
+
 A field that doesn't exist is an error, not an empty result:
 
 ```
