@@ -49,7 +49,7 @@ temporary cache directory. The helpers:
 | `$this->bootKernel($root, $debug, $overrides)` | boots any TinyTank app with a temporary cache directory (`KernelTestCase`) |
 | `$this->request($app, $uri, $method, $headers, $body)` | handles a request |
 | `self::body($response)` | the body of any response, including Datastar streams and files |
-| `$this->datastarUrl($html, $template)` | the Datastar URL rendering `$template`, from a page |
+| `$this->datastarUrl($html, $template, $method)` | the URL of a page's Datastar action rendering `$template` (`@get`, `@post`…; `$method` to pick one) |
 | `$this->logged()` | what the apps booted in this test have logged (each test gets its own log directory) |
 | `$this->tempDir()`, `$this->copyToTemp()`, `self::write()` | temporary files, deleted after the test |
 
@@ -80,6 +80,15 @@ $this->request($app, '/clock', 'POST', ['Sec-Fetch-Site' => 'same-origin'], '{}'
 
 // revalidation
 $this->request($app, '/about', 'GET', ['If-None-Match' => $etag]);
+```
+
+A template action (`datastar.post('_partials/like')` in a page) has a signed URL: take it from the
+page, then send it with its method and the signals as JSON. Another method gets a 405.
+
+```php
+$url = $this->datastarUrl(self::body($this->request($app, '/')), '_partials/like', 'post');
+$events = self::body($this->request($app, $url, 'POST', ['Sec-Fetch-Site' => 'same-origin'], '{"count":1}'));
+self::assertStringContainsString('You liked', $events);
 ```
 
 ## Environment

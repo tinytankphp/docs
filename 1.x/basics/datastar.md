@@ -57,6 +57,12 @@ happen once, belong in a [controller](./controllers) that checks them.
 
 For more than one change, queue events explicitly. They're sent in template order:
 
+::: warning Queue the HTML too
+As soon as a partial queues an event, **only the queued events are sent**: HTML outside
+`patch_elements` is dropped. A partial that changes a signal *and* an element wraps the element in
+`{% apply patch_elements %}`.
+:::
+
 ```twig
 {% apply patch_elements %}
     <p id="likes">You liked {{ fruit }}.</p>

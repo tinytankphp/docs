@@ -12,7 +12,8 @@ ddev start
 ddev npm install && ddev npm run dev
 ```
 
-Open `https://my-site.ddev.site`, and keep the [style guide](#the-style-guide) at `/style-guide` open
+Pages need the dev server running (or a `npm run build`); without one they're an error saying
+"Vite manifest not found". Open `https://my-site.ddev.site`, and keep the [style guide](#the-style-guide) at `/style-guide` open
 in another tab while you work on the design.
 
 ## 2. Your site's identity
@@ -34,16 +35,30 @@ in another tab while you work on the design.
 The skeleton comes with examples, so you can see how things fit together. Keep, adapt or delete
 each of them:
 
-| What | Where |
-|---|---|
-| The home page, with Datastar demos (live search, a server clock, a like button) | `templates/index.twig`, `src/Controller/HomeController.php` and `ClockController.php`, `templates/_partials/clock.twig` and `like.twig`, the `/clock` route in `config/routes.php` |
-| Two blog posts and a draft | `content/blog/2026/09/`, `content/blog/drafts/` |
-| An FAQ, as a data collection | `content/faq/`, `config/collections.php` |
-| Pages: About (with a child page), Contact (with its form) and Privacy | `content/pages/`; Contact and Privacy are worth adapting rather than deleting |
-| The style guide (below) | `content/pages/style-guide/` |
+| What | Where | Tests that check it |
+|---|---|---|
+| The home page, with Datastar demos (live search, a server clock, a like button) | `templates/index.twig`, `src/Controller/HomeController.php` and `ClockController.php`, `templates/_partials/clock.twig`, `like.twig` and `search.twig`, `resources/js/pages/home.js`, the `/clock` route in `config/routes.php` (and `clock` in `cdn.exclude`) | `tests/PagesTest.php` (home, clock, like), `tests/e2e/datastar.spec.js`, `tests/e2e/persist.spec.js` |
+| Two blog posts and a draft | `content/blog/2026/09/`, `content/blog/drafts/` | `tests/PagesTest.php`, and the browser tests that open a post (`accessibility`, `images`, `no-javascript`, `video`); the blog's own tests use `tests/data/content/` and keep working |
+| An FAQ, as a data collection | `content/faq/`, `config/collections.php` | none (the home page lists it) |
+| Pages: About (with a child page), Contact (with its form) and Privacy | `content/pages/`; Contact and Privacy are worth adapting rather than deleting | `tests/PagesTest.php`, `tests/ContactTest.php`, `tests/CdnTest.php`, `tests/e2e/contact.spec.js`, `tests/e2e/languages.spec.js` |
+| The style guide (below) | `content/pages/style-guide/` | `tests/PagesTest.php`, `tests/e2e/style-guide.spec.js` |
 
-The skeleton's tests (`tests/`) check some of these examples: when you delete one, delete or adapt
-its test too, and run `ddev composer test`.
+The skeleton's tests check these examples on purpose, so they keep working while you build. When
+you delete or change one, update the tests listed next to it, then run `ddev composer test` and the
+[browser tests](../testing#browser-tests).
+
+### A single-language site
+
+The skeleton is in English and Italian. For one language:
+
+1. In `config/app.php`, list only your language in `languages` (and set `language` to it).
+2. Delete the other language's files: `translations/it.php`, and its content versions
+   (`find content -name '*.it.md' -delete`).
+3. Delete or adapt the tests about the second language: `tests/e2e/languages.spec.js`, and the
+   `/it/…` requests in `tests/PagesTest.php`, `tests/ContactTest.php`, `tests/CdnTest.php`,
+   `tests/BlogPagesTest.php` and `tests/e2e/contact.spec.js`.
+
+The language switcher disappears by itself when there's only one language.
 
 ### The style guide
 

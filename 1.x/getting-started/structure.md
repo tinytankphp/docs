@@ -23,6 +23,7 @@ my-site/
 ├── var/log/                 The log, one file per day (see Logging)
 ├── vendor/tinytank/framework/  ★ The framework, installed by Composer: never edit it
 ├── .env                     Local environment (never committed)
+├── AGENTS.md                Instructions for AI coding agents (CLAUDE.md points to it)
 ├── composer.json            Your app's dependencies; requires tinytank/framework
 └── vite.config.js           Your entry points and Vite plugins
 ```

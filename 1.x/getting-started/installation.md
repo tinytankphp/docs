@@ -64,17 +64,24 @@ ddev npm run dev                     # Vite + Tailwind with hot reload
 Open `https://my-site.ddev.site`. Editing a template, a post or a translation reloads the page;
 CSS changes apply without a reload.
 
+::: warning Assets first
+Pages need either the Vite dev server (`npm run dev`) or a build (`npm run build`): without one,
+every page is an error saying "Vite manifest not found". (The tests are the exception: they render
+pages without asset tags until there's a build.)
+:::
+
 ::: details Without DDEV
 Any PHP 8.4 setup works. Point the web server's document root at `public/` and send every request
 that isn't a file to `public/index.php`. For a quick look:
 
 ```sh
-composer update && npm install && npm run build
+composer install && npm install && npm run build
 php -S localhost:8000 -t public public/index.php
 ```
 
-The Vite dev server is configured for DDEV; outside it, run `npm run build` after asset changes, or
-adjust `server.origin` in `vite.config.js`.
+`public/index.php` lets PHP's built-in server deliver the files in `public/` (built CSS and JS,
+images) itself. The Vite dev server is configured for DDEV; outside it, run `npm run build` after
+asset changes, or adjust `server.origin` in `vite.config.js`.
 :::
 
 ## Check that everything works
@@ -88,4 +95,12 @@ ddev composer analyse    # PHPStan
 
 - [Starting a site](./checklist): the checklist for your first hours with a new site
 - [Project structure](./structure): where everything lives
-- [Your first page](./first-page): a route, a controller and a template in five minutes
+- [Your first page](./first-page): a content page, a page with a controller, a little interactivity
+
+::: tip Working with an AI coding agent
+The skeleton's `AGENTS.md` tells coding agents (Claude Code, Codex, Cursor…) how a TinyTank site
+works and which habits from other frameworks don't apply. For the full docs in one request, point
+them at [`llms-full.txt`](https://docs.tinytank.dev/llms-full.txt) (index:
+[`llms.txt`](https://docs.tinytank.dev/llms.txt)); every page also exists as Markdown, with `.md`
+added to its URL.
+:::

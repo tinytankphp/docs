@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress';
+import llmstxt from 'vitepress-plugin-llms';
 
 // Published on GitHub Pages at the custom domain https://docs.tinytank.dev/ (the root). Without the
 // domain, Pages would serve it under /docs/: build with DOCS_BASE=/docs/ then.
@@ -23,6 +24,18 @@ export default defineConfig({
         },
     },
     lastUpdated: true,
+    // For LLMs and coding agents: /llms.txt (an index of every page), /llms-full.txt (all the docs in
+    // one file) and a .md version of each page (https://llmstxt.org).
+    vite: {
+        plugins: [
+            llmstxt({
+                domain: 'https://docs.tinytank.dev',
+                description: 'A tiny, database-free PHP micro framework for static-like dynamic sites: Twig, Datastar, Markdown content, translations and SEO, compiled ahead of time for Opcache.',
+                details: 'Start a site with `composer create-project tinytank/tinytank my-site`, then read the Starting a site checklist. TinyTank has no database, no sessions and no admin panel; interactivity uses Datastar actions; a strict Content Security Policy blocks inline scripts and other hosts.',
+                ignoreFiles: ['README.md', 'index.md'],
+            }),
+        ],
+    },
     head: [
         // The tank on a square canvas; favicon.ico (16, 32, 48 px) for browsers without SVG favicons.
         ['link', { rel: 'icon', type: 'image/svg+xml', href: `${base}favicon.svg` }],
