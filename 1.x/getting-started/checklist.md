@@ -25,8 +25,9 @@ in another tab while you work on the design.
 - [ ] **Logo and favicon**: the skeleton's placeholders are `resources/icons/tinytank.svg` (shown in
       the header as `icon-[app--tinytank]`) and `public/favicon.svg`. Replace them with your own;
       renaming the icon file changes its class name, so update `templates/_layout.twig` too.
-- [ ] **Colours and fonts**: the design tokens at the top of `resources/css/app.css`
-      ([Fonts & icons](../features/fonts-icons), [Dark & light theme](../features/theme)).
+- [ ] **Colours and fonts**: the `@theme` block in `resources/css/app.css`, where each colour is a
+      light and dark pair, and the font import above it ([Fonts & icons](../features/fonts-icons),
+      [Dark & light theme](../features/theme)).
 
 ## 3. The starter content
 
