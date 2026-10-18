@@ -4,7 +4,7 @@
 
 | Global | Type | |
 |---|---|---|
-| `site` | `TinyTank\Site` | `site.name`, `site.description` (in the current language), `site.baseUrl`, `site.language`, `site.locale`, `site.defaultLanguage`, `site.languages` |
+| `site` | `TinyTank\Site` | `site.name`, `site.description` (in the current language), `site.baseUrl`, `site.language`, `site.locale`, `site.defaultLanguage`, `site.languages`, `site.path` (the current page's path without the language prefix, for menus: `site.path starts with '/projects'`) |
 | `seo` | `TinyTank\Seo\Seo` | page metadata setters: `{% do seo.title('…') %}` (see [SEO](../features/seo)) |
 | `datastar` | `TinyTank\Datastar` | Datastar actions, below |
 

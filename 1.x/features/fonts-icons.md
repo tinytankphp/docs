@@ -36,6 +36,9 @@ appears in the right font sooner:
 Preload only what nearly every page uses (usually one file: the main script, regular style). The path
 is the file's source path, as Vite's manifest lists it. Nothing is printed while the dev server runs.
 
+Font files always stay files: Vite inlines small assets as `data:` URLs, but never fonts, since the
+Content Security Policy only allows fonts from the site itself (some subsets weigh under 4 KB).
+
 ### Using another font
 
 ```sh

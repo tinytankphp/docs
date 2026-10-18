@@ -78,6 +78,29 @@ Any control bound to `_theme` works, for example a select:
 
 In JavaScript, set it like any signal: `mergePatch({ _theme: 'dark' })`.
 
+A two-way switch, for a site that only offers light and dark:
+
+```html
+<button type="button" role="switch" aria-label="Light theme"
+        data-attr:aria-checked="String($_theme === 'light')"
+        data-on:click="$_theme = $_theme === 'light' ? 'dark' : 'light'">…</button>
+```
+
+`String(…)`: ARIA states are the words `"true"` and `"false"`, while `data-attr` writes a boolean as a
+bare attribute (`aria-checked=""`) or removes it.
+
+## A default other than the system
+
+Visitors who haven't chosen get their system's setting. A site designed dark first (or light first)
+sets its own default in `config/app.php`:
+
+```php
+'theme' => ['default' => 'dark'],   // 'system' (the default), 'light' or 'dark'
+```
+
+`{{ theme_script() }}` then uses it before the first paint (its CSP hash follows), and the layout's
+signal default matches it: `data-signals="{_theme: 'dark'}"`. A saved choice still wins.
+
 ## Content Security Policy
 
 The script in `<head>` is the same on every page, so a policy can allow it by its hash instead of

@@ -28,6 +28,7 @@ environment variables fit together.
 | `csp.enabled` | bool | `true` | Send the Content Security Policy header on pages |
 | `csp.report_only` | bool | `false` | Report violations in the browser console instead of blocking |
 | `csp.sources` | map | `[]` | Extra sources per directive, e.g. `['frame-src' => ['https://player.vimeo.com']]` |
+| `theme.default` | string | `'system'` | What visitors without a saved choice get: `'system'`, `'light'` or `'dark'` ([theme](../features/theme#a-default-other-than-the-system)) |
 | `site.name` | string or map | `'TinyTank'` | Site name: titles, Open Graph, feed |
 | `site.description` | string or map | | Default meta description and feed subtitle |
 | `site.image` | ?string or map | `null` | Default share image (`/path` or URL) |
