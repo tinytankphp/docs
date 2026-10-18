@@ -92,9 +92,26 @@ adjust `server.origin` in `vite.config.js`.
 ## Check that everything works
 
 ```sh
-ddev composer test       # the framework and app test suites
+ddev composer test       # your site's tests (PHPUnit)
 ddev composer analyse    # PHPStan
 ```
+
+## Starter content
+
+The skeleton comes with examples, so you can see how things fit together. Keep, adapt or delete
+each of them:
+
+| What | Where |
+|---|---|
+| The home page, with Datastar demos (live search, a server clock, a like button) | `templates/index.twig`, `src/Controller/HomeController.php` and `ClockController.php`, `templates/_partials/clock.twig` and `like.twig`, the `/clock` route in `config/routes.php` |
+| Two blog posts and a draft | `content/blog/2026/09/`, `content/blog/drafts/` |
+| An FAQ, as a data collection | `content/faq/`, `config/collections.php` |
+| Pages: About (with a child page), Contact (with its form) and Privacy | `content/pages/`; Contact and Privacy are worth adapting rather than deleting |
+| **A style guide**: every element a post or page can contain, for designing the site | `content/pages/style-guide/`, an [unlisted](../content/pages#unlisted-pages) page at `/style-guide` |
+| The logo icon, favicon and site name | `resources/icons/tinytank.svg`, `public/favicon.svg`, `site` in `config/app.php` |
+
+The skeleton's tests (`tests/`) check some of these examples: when you delete one, delete or adapt
+its test too.
 
 ## Next steps
 

@@ -42,6 +42,11 @@ whole blog. The month folder must match the post's `date`.
 
 ## Markdown
 
+::: tip See every element
+The skeleton's **style guide** at `/style-guide` shows all of them in your site's design: a handy
+page for a designer, and a quick check after changing styles.
+:::
+
 Posts use [GitHub-flavoured Markdown](https://github.github.com/gfm/): tables, task lists,
 strikethrough and autolinks. Headings get anchor links. External links open in a new tab with
 `rel="noopener noreferrer"`.

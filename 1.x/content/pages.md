@@ -152,7 +152,8 @@ A page has these fields:
 ### Unlisted pages
 
 A page with `unlisted: true` works like any other, for whoever has its URL, but stays out of sight:
-a style guide for your designer, a thank-you page, a campaign landing page, a preview for a client.
+a style guide for your designer (the skeleton has one, `content/pages/style-guide/`), a thank-you
+page, a campaign landing page, a preview for a client.
 
 - search engines are told not to index it (`<meta name="robots" content="noindex">`);
 - it isn't in `/sitemap.xml`;
