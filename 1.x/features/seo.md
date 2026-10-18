@@ -41,6 +41,8 @@ Site-wide defaults (name, description, default image, author) come from `site` i
 
 - **Blog posts** are mapped from front matter by `TinyTank\Blog\PostSeo`: title, summary, image,
   `og:type=article` with dates and tags, and a `BlogPosting` JSON-LD block. Drafts get `noindex`.
+- **Content pages** with `unlisted: true` get `noindex` and stay out of the sitemap
+  ([Unlisted pages](../content/pages#unlisted-pages)).
 - **Error pages** get `noindex`.
 - **hreflang** links list the page in every language (or only where it exists, see
   [Languages](./languages#the-language-switcher)), plus `x-default` for the default language.

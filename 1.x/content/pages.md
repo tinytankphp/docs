@@ -36,6 +36,7 @@ data:                           (optional: anything else the template needs)
 slug: chi-siamo                 (translations only: this language's URL segment, see below)
 form: contact                   (optional: a form from config/forms.php the page shows and receives)
 cdn: false                      (optional: never cached at the CDN, see CDN caching)
+unlisted: true                  (optional: reachable by its URL only, see below)
 ---
 Page text in Markdown. ![Our team](team.jpg)
 ```
@@ -123,7 +124,7 @@ are translated with the page: `index.it.md` gives its own `data`.
 Menus are queries ([Querying content](../basics/querying)). The skeleton's footer:
 
 ```twig
-{% for item in pages().where('parent', '').orderBy('order, title') %}
+{% for item in pages().where('parent', '').where('unlisted', false).orderBy('order, title') %}
     <a href="{{ path('page', {path: item.path}) }}">{{ item.title }}</a>
 {% endfor %}
 ```
@@ -131,7 +132,7 @@ Menus are queries ([Querying content](../basics/querying)). The skeleton's foote
 A page's children, as `templates/pages/about.twig` lists them:
 
 ```twig
-{% for child in pages().where('parent', page.path).orderBy('order, title') %}…{% endfor %}
+{% for child in pages().where('parent', page.path).where('unlisted', false).orderBy('order, title') %}…{% endfor %}
 ```
 
 A page has these fields:
@@ -143,10 +144,23 @@ A page has these fields:
 | `slug` | the folder name: `credits` |
 | `parent` | the parent's path, or `''` for a top-level page |
 | `depth` | `1` for top-level pages, `2` for their children… |
-| `language`, `title`, `summary`, `image`, `template`, `order`, `updated`, `cdn`, `data` | from the file and its front matter |
+| `language`, `title`, `summary`, `image`, `template`, `order`, `updated`, `cdn`, `unlisted`, `data` | from the file and its front matter |
 | `html` | the rendered Markdown |
 
 `pages()` is sorted by path, so each page comes before its children.
+
+### Unlisted pages
+
+A page with `unlisted: true` works like any other, for whoever has its URL, but stays out of sight:
+a style guide for your designer, a thank-you page, a campaign landing page, a preview for a client.
+
+- search engines are told not to index it (`<meta name="robots" content="noindex">`);
+- it isn't in `/sitemap.xml`;
+- menus skip it, because they ask for `where('unlisted', false)`, as the skeleton's do. `pages()`
+  itself still returns it: your templates decide what to show.
+
+Translations inherit it, unless they set their own. Unlisted isn't private: anyone with the link can
+open the page, and it's still served like any other.
 
 ## Routes
 
@@ -169,8 +183,8 @@ skeleton's tests check it too.
 ## SEO and the sitemap
 
 `TinyTank\Pages\PageSeo` (applied in `PageController`) sets the title, the summary as meta
-description, the share image and a `WebPage` JSON-LD block. Every page is in `/sitemap.xml` in each
-language it's written in, with `updated` as `lastmod`.
+description, the share image and a `WebPage` JSON-LD block, and `noindex` for an [unlisted](#unlisted-pages)
+page. Every other page is in `/sitemap.xml` in each language it's written in, with `updated` as `lastmod`.
 
 ## In production
 

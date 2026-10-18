@@ -25,7 +25,7 @@ The skeleton requires:
 "prefer-stable": true
 ```
 
-`^0.1` means any 0.1.x release: fixes only. With `prefer-stable`, `composer update` installs the
+`^0.1` means any 0.1.x release: fixes, and additions that need no change in your site. With `prefer-stable`, `composer update` installs the
 latest **tagged** one; `@dev` only lets maintainers work against the `main` branch (see Contributing).
 While TinyTank is 0.x, a new minor version (0.2.0) may change behaviour: move to it deliberately, by
 changing the constraint to `^0.2@dev` after reading its changelog entry. From 1.0, `^1.0` will
