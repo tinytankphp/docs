@@ -57,6 +57,7 @@ is the whole pattern.
 | `search(text)` | items containing the text, case-insensitive. Posts: title, summary and tags; collections: their `string` and `list` fields. Empty: no filter |
 | `language(code)` | items in that language instead of the current one |
 | `orderBy('field [asc\|desc], …')` | replaces the default order: `'title'`, `'date desc'`, `'order, name'`. Items without a value come last; text is compared naturally ("Item 9" before "Item 10") and case-insensitively |
+| `except(item)` | every item but this one (or these: a list); items or their slugs, a page's path. `posts().except(post)` for "more posts" |
 | `limit(n)`, `offset(n)` | a slice of the results |
 
 `where()`, `orderBy()` and `countBy()` also reach a value inside a field by its path: a page's
@@ -80,12 +81,21 @@ posts: no field "titel". Did you mean "title"? Fields: slug, language, title, da
 | `exists()` | whether there's at least one |
 | `paginate(page, perPage = null)` | one page: `{items, page, pages, per_page, total, has_more}`. Ignores `limit` and `offset`; `perPage` defaults to `blog.per_page` for posts and 20 otherwise. A page past the end has no items |
 | `countBy(field)` | how many matches have each value, most frequent first: `posts().countBy('tags')` → `{php: 3, guide: 1}` |
+| `neighbours(item, wrap = false)` | `{prev, next}`: the items before and after one in this order (filters and `orderBy` apply, `limit` doesn't), `null` at an end, or with `wrap` the other end. For "previous / next" links |
 | `for item in query` | loops over `all()` |
 
 Items are arrays: see the fields of [posts](../reference/php#blog) and of
 [collection items](../content/collections#add-items).
 
 ## Examples
+
+Previous and next project, wrapping around, and two other projects:
+
+```twig
+{% set around = collection('projects').neighbours(project, wrap: true) %}
+<a href="{{ path('project', {slug: around.prev.slug}) }}">◂ {{ around.prev.title }}</a>
+{% for other in collection('projects').except(project).limit(2) %}…{% endfor %}
+```
 
 A "latest posts" box on the home page:
 
