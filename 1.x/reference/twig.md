@@ -19,7 +19,7 @@ Plus anything your `config/bootstrap.php` adds.
 | `csp_allow(directive, source, …)` | adds Content Security Policy sources to the current response only (use with `do`) |
 | `image(url, alt = '', options = {})` | a `<picture>` with responsive AVIF/WebP versions for a post's or page's image, a plain `<img>` otherwise; options: `preset`, `loading`, `sizes`, any `<img>` attribute |
 | `form_spam(form)` | the spam checks' hidden fields for a form, inside its `<form>`; makes the page uncacheable when it prints a timing token |
-| `content(item)` | the item's HTML with its content components rendered (`entry` = the item) |
+| `content(item)` | the item's HTML with its content components rendered (`entry` = the item). It stays HTML in a variable: `{% set body = content(post) %}{{ body }}` |
 | `posts()` | a `TinyTank\Query` over the blog posts ([Querying content](../basics/querying)) |
 | `pages()` | a `TinyTank\Query` over the content pages |
 | `collection(name)` | a `TinyTank\Query` over a data collection |

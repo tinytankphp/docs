@@ -97,6 +97,10 @@ Datastar requests. The leading underscore is a convention; Datastar can render a
 Twig escapes everything by default. Use `|raw` only for HTML you trust; the blog's rendered post
 HTML is safe to print raw, because Markdown is parsed with raw HTML escaped and unsafe links removed.
 
+`content()` can be stored in a variable and printed later (`{% set body = content(post) %}`). Twig's
+own `block('name')` can't: it returns plain text, which `{{ }}` escapes. Print a block you rendered
+yourself with `|raw`, since its HTML comes from your template.
+
 ## Debug mode
 
 With `APP_DEBUG=1`, templates aren't cached and `strict_variables` is on: using an undefined
