@@ -45,7 +45,8 @@ temporary cache directory. The helpers:
 
 | Helper | |
 |---|---|
-| `$this->app($debug = false, $overrides = [])` | boots the site; overrides merge over `config/app.php` (`AppTestCase`) |
+| `$this->app($debug = false, $overrides = [])` | boots the site with the fixture content; overrides merge over `config/app.php` (`AppTestCase`) |
+| `$this->site($debug = false, $overrides = [])` | the same with the site's real `content/`, for tests of the pages visitors see (`AppTestCase`) |
 | `$this->bootKernel($root, $debug, $overrides)` | boots any TinyTank app with a temporary cache directory (`KernelTestCase`) |
 | `$this->request($app, $uri, $method, $headers, $body)` | handles a request |
 | `self::body($response)` | the body of any response, including Datastar streams and files |
