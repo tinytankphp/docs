@@ -83,8 +83,9 @@ A small PHP framework for sites that are mostly content…
 The body becomes the item's `html`. Links and images in it use `/paths` or full URLs, unless the
 item is a folder (below).
 
-Every item also has `slug` (from the file name), `language` and `source` (its file, for error
-messages). These names can't be used as fields.
+Every item also has `slug` (from the file name), `language`, `source` (its file, for error
+messages), `reading_minutes` (its body at 220 words a minute, at least 1) and `assets` (an item
+folder's files). These names, `html` and `components` can't be used as fields.
 
 ### Items with their own files
 

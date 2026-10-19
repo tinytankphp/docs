@@ -159,7 +159,8 @@ A page has these fields:
 | `slug` | the folder name: `credits` |
 | `parent` | the parent's path, or `''` for a top-level page |
 | `depth` | `1` for top-level pages, `2` for their children… |
-| `language`, `title`, `summary`, `image`, `template`, `order`, `updated`, `cdn`, `unlisted`, `data` | from the file and its front matter |
+| `language`, `title`, `summary`, `image`, `template`, `children`, `order`, `updated`, `cdn`, `unlisted`, `data` | from the file and its front matter |
+| `reading_minutes` | minutes to read the text, at 220 words a minute (at least 1), as posts have |
 | `html` | the rendered Markdown |
 
 `pages()` is sorted by path, so each page comes before its children.
