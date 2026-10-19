@@ -123,7 +123,7 @@ The skeleton's tests cover:
 | `persist.spec.js` | a persisted signal survives a reload |
 | `video.spec.js` | nothing reaches YouTube before pressing play (requests to other hosts are recorded, never sent) |
 | `languages.spec.js` | the switcher and redirects with translated slugs |
-| `accessibility.spec.js` | the skip link moves the focus to the content, keyboard focus is visible, reduced motion turns transitions off |
+| `accessibility.spec.js` | the skip link moves the focus to the content, keyboard focus is visible, reduced motion stops movement but keeps colour fades, `motion-allowed` keeps moving |
 | `no-javascript.spec.js` | colours, the hidden theme switcher and video links without JavaScript |
 
 Every test also fails on a **Content Security Policy violation, a JavaScript error or a console

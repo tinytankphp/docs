@@ -90,8 +90,14 @@ The skeleton's layout and CSS come with three things every site keeps, whatever 
   moves the focus past the navigation to `<main id="main">`.
 - **Visible keyboard focus**: `:focus-visible` gets an outline in the theme's `primary` colour, on
   every element. Mouse clicks don't trigger it on links and buttons, so they stay clean.
-- **Reduced motion**: visitors whose system asks for less motion get no transitions, animations or
-  smooth scrolling (`@media (prefers-reduced-motion: reduce)` in `resources/css/app.css`).
+- **Reduced motion**: visitors whose system asks for less motion get no movement: animations stop,
+  transitions keep only colours and opacity (a hover still fades, nothing slides), and scrolling
+  isn't smooth (`@media (prefers-reduced-motion: reduce)` in `resources/css/app.css`).
+
+Movement you add yourself, such as a card that lifts or a row that slides on hover, goes behind
+Tailwind's `motion-safe:` (`motion-safe:hover:-translate-y-1`): with less motion it simply doesn't
+happen, instead of jumping. An effect a visitor switches on knowingly (an animated background they
+enabled) can keep moving with the class `motion-allowed`.
 
 They're plain CSS and markup in your site, so adapt them freely; `tests/e2e/accessibility.spec.js`
 checks they keep working. Interactive components such as dialogs or toasts aren't part of TinyTank:
