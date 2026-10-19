@@ -20,8 +20,8 @@ Exit codes: `0` deployed, `1` a step failed, `2` invalid options (nothing was ch
 
 ## `cache:clear`
 
-Deletes everything in `var/cache` (keeping `.gitkeep`) and the post and page files published to
-`public/media/blog/` and `public/media/pages/`. If a deploy left the Composer autoloader authoritative, it also runs
+Deletes everything in `var/cache` (keeping `.gitkeep`) and the post, page and collection files
+published to `public/media/blog/`, `public/media/pages/` and `public/media/collections/`. If a deploy left the Composer autoloader authoritative, it also runs
 `composer dump-autoload`, so new classes are found again. Run it when you go back to development
 after a deploy.
 

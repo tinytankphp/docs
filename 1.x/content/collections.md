@@ -43,7 +43,7 @@ Names use lowercase letters, digits and underscores (`collection('team_members')
 | `int`, `float` | a number | `order: 2`, `price: 9.5` |
 | `bool` | `true` or `false` | `featured: true` |
 | `date` | `YYYY-MM-DD` | `joined: 2024-03-01` |
-| `url` | a `/path` (a file in `public/`) or an `https://` URL | `photo: /images/ada.webp` |
+| `url` | a `/path` (a file in `public/`), an `https://` URL, or in an [item folder](#items-with-their-own-files) a file next to it | `photo: /images/ada.webp`, `photo: ada.jpg` |
 | `markdown` | Markdown text, rendered to HTML | `bio: Writes *tests*.` |
 | `list` | a list of plain values | `tags: [setup, php]` |
 | `array` | any YAML structure, unchecked | `links: {site: https://ada.dev}` |
@@ -80,11 +80,47 @@ order: 1
 A small PHP framework for sites that are mostly content…
 ```
 
-The body becomes the item's `html`. Links and images in it use `/paths` or full URLs; images go in
-`public/`, since collection folders hold only item files.
+The body becomes the item's `html`. Links and images in it use `/paths` or full URLs, unless the
+item is a folder (below).
 
 Every item also has `slug` (from the file name), `language` and `source` (its file, for error
 messages). These names can't be used as fields.
+
+### Items with their own files
+
+An item that has images or files of its own is a folder, named after its slug, with `index.md` (or
+`index.yaml`) and the files next to it, like a post:
+
+```
+content/projects/
+    pulse-os/
+        index.md          the item: fields in the front matter, the body below
+        index.it.md       its Italian version
+        cover.jpg         /media/collections/projects/pulse-os/cover.jpg
+        diagram.png
+    nightshift.md         an item without files stays a single file
+```
+
+In a folder, a `url` field can name one of its files (`image: cover.jpg`), and relative links and
+images in the body point at them (`![The patch graph](diagram.png)`). Images get responsive AVIF/WebP
+versions, in the body and through `image()`:
+
+```twig
+{{ image(project.image, '', {sizes: '(min-width: 1280px) 380px, 100vw'}) }}
+```
+
+Each item lists its files in `assets`. `deploy` publishes them to `public/media/collections/`; in
+development this route in `config/routes.php` serves them (the skeleton has it):
+
+```php
+use TinyTank\Collections\AssetController as CollectionAssetController;
+use TinyTank\Collections\Collections;
+
+$app->get(Collections::ASSET_URL . '/{file}', CollectionAssetController::class, 'collection_asset', ['file' => '.+']);
+```
+
+A folder holds its index files and its files, no subfolders; an item is all in its folder or all
+single files, not both.
 
 ## Translations
 
@@ -175,10 +211,11 @@ Collections are checked when they're compiled (on every request in development, 
 production), and anything unexpected stops with the file name:
 
 - a field not in the definition, a missing required field, or a value of the wrong type
-- a file that isn't `<slug>.md` or `<slug>.yaml`, or a subfolder
+- a file that isn't `<slug>.md` or `<slug>.yaml`, a folder without `index.md`, or a folder inside an
+  item folder
 - a translation without its default-language file, or for a language that isn't configured
 - a folder in `content/` that isn't the blog or a defined collection (usually a typo)
-- a relative link in Markdown
+- a relative link in a single-file item's Markdown, or one to a file its folder doesn't have
 
 Run `ddev composer test`: the skeleton's tests compile the site's real content, so CI catches a
 broken file before it's deployed.

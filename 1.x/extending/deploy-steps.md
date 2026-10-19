@@ -17,7 +17,7 @@ ddev console deploy --list-steps
 | `routes` | compile the router |
 | `blog` | compile the posts and publish their files to `public/media/blog/` (images without metadata, plus their responsive versions) |
 | `pages` | compile the content pages, check that no route hides one, publish their files to `public/media/pages/` |
-| `collections` | compile the data collections |
+| `collections` | compile the data collections, publish their item folders' files to `public/media/collections/` |
 | `embeds` | download the posters and titles of `::youtube` / `::vimeo` videos to `public/media/embeds/` (a failed download is a warning) |
 | `translations` | compile the translation catalogues |
 | `templates` | compile every Twig template |

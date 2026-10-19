@@ -125,6 +125,9 @@ Query pages with `$app->pages()` ([Content pages](../content/pages)). `TinyTank\
 | `schema(name): Schema` | a collection's definition |
 | `warmup(): array` | compile into `var/cache/collections.php`; returns items per collection |
 | `exported(): list<string>` | collections with a JSON export |
+| `asset(file): ?string` | the file behind `projects/pulse-os/cover.jpg` (an item folder's), or null |
+| `publishAssets(publicDir): int` | copy the item folders' files to `public/media/collections/` (deploy does) |
+| `Collections::ASSET_URL` | `/media/collections` |
 
 ## Images
 
