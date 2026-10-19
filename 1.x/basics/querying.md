@@ -67,7 +67,7 @@ value counts as `null`.
 A field that doesn't exist is an error, not an empty result:
 
 ```
-posts: no field "categry". Fields: slug, language, title, date, updated, image, summary, tags, draft, reading_minutes.
+posts: no field "titel". Did you mean "title"? Fields: slug, language, title, date, updated, image, summary, tags, draft, reading_minutes.
 ```
 
 ## Running a query
