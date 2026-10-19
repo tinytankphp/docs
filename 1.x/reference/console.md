@@ -29,6 +29,20 @@ after a deploy.
 |---|---|---|
 | `--composer` | `composer` | Composer binary |
 
+## `site:clean`
+
+Removes the skeleton's examples ([Starting a site](../getting-started/checklist#_3-the-starter-content)):
+the files and folders listed in `.examples`, and every block between a line containing
+`example:start` and one containing `example:end` in the site's `config/`, `src/`, `templates/`,
+`resources/`, `tests/`, `translations/`, `content/`, `public/` and `AGENTS.md`, then `.examples`.
+It lists everything first and asks. Unbalanced markers stop it before anything changes. While
+`.examples` exists, `deploy` warns that the examples are still there.
+
+| Option | |
+|---|---|
+| `--dry-run` | only list what would go |
+| `--force`, `-f` | don't ask |
+
 ## `cdn:purge`
 
 Drops pages from the CDN's cache ([CDN caching](../deployment/cdn)), with the purger set by

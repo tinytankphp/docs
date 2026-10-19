@@ -21,8 +21,7 @@ in another tab while you work on the design.
 - [ ] **Name, description, author and share image**: `site` in `config/app.php`. Each can be one
       value or one per language ([Languages](../features/languages#the-site-s-name-description-and-share-image)).
 - [ ] **Languages**: `language` and `languages` in `config/app.php`, and a `translations/<code>.php`
-      for each. A single-language site lists one; remove `translations/it.php` if you don't need
-      Italian.
+      for each ([below](#languages)).
 - [ ] **Logo and favicon**: the skeleton's placeholders are `resources/icons/tinytank.svg` (shown in
       the header as `icon-[app--tinytank]`) and `public/favicon.svg`. Replace them with your own;
       renaming the icon file changes its class name, so update `templates/_layout.twig` too.
@@ -32,34 +31,43 @@ in another tab while you work on the design.
 
 ## 3. The starter content
 
-The skeleton comes with examples, so you can see how things fit together. Keep, adapt or delete
-each of them:
+The skeleton comes with **examples**, so you can see how things fit together: Datastar demos on the
+home page (a live search, a like button, a sound you can play, a server clock), an FAQ as a data
+collection, two blog posts and a draft, and an Italian translation of everything. `create-project`
+asks whether to keep them; when you're done learning from them, one command removes them all,
+with their tests:
+
+```sh
+php bin/console site:clean            # lists what goes, then asks
+php bin/console site:clean --dry-run  # only lists
+```
+
+It deletes the files listed in `.examples` and the blocks marked `example:start` … `example:end` in
+the site's config, templates and tests, then `.examples` itself. What's left is a working site whose
+tests pass: an English home page with your site's name and latest posts, the blog, About, Contact,
+Privacy and the style guide. Until you run it, the home page says how, and `deploy` reminds you.
+
+- [ ] **Remove the examples** (`site:clean`), or keep the ones you want: delete the marked block
+      around something to keep it, then clean.
+
+The pages that stay are starting points to adapt:
 
 | What | Where | Tests that check it |
 |---|---|---|
-| The home page, with Datastar demos (live search, a server clock, a like button) | `templates/index.twig`, `src/Controller/HomeController.php` and `ClockController.php`, `templates/_partials/clock.twig`, `like.twig` and `search.twig`, `resources/js/pages/home.js`, the `/clock` route in `config/routes.php` (and `clock` in `cdn.exclude`) | `tests/PagesTest.php` (home, clock, like, and `testPageScriptsLoadOnlyWhereTheyAreUsed`, which only runs once there's a build), `tests/e2e/datastar.spec.js`, `tests/e2e/persist.spec.js` |
-| Two blog posts and a draft | `content/blog/2026/09/`, `content/blog/drafts/` | `tests/PagesTest.php`, and the browser tests that open a post (`accessibility`, `images`, `no-javascript`, `video`); the blog's own tests use `tests/data/content/` and keep working |
-| An FAQ, as a data collection | `content/faq/`, `config/collections.php` | none (the home page lists it) |
-| Pages: About (with a child page), Contact (with its form) and Privacy | `content/pages/`; Contact and Privacy are worth adapting rather than deleting | `tests/PagesTest.php`, `tests/ContactTest.php`, `tests/CdnTest.php`, `tests/e2e/contact.spec.js`, `tests/e2e/languages.spec.js` |
-| The style guide (below) | `content/pages/style-guide/` | `tests/PagesTest.php`, `tests/e2e/style-guide.spec.js` |
+| The home page | `templates/index.twig`, `src/Controller/HomeController.php` | `tests/PagesTest.php` |
+| Pages: About (with a child page), Contact (with its form) and Privacy | `content/pages/`; Contact and Privacy are worth adapting rather than deleting | `tests/PagesTest.php`, `tests/ContactTest.php`, `tests/CdnTest.php`, `tests/e2e/contact.spec.js` |
+| The style guide (below) | `content/pages/style-guide/` | `tests/PagesTest.php`, `tests/e2e/style-guide.spec.js`, and the browser tests that use its image and video (`accessibility`, `images`, `no-javascript`, `video`) |
 
-The skeleton's tests check these examples on purpose, so they keep working while you build. When
-you delete or change one, update the tests listed next to it, then run `ddev composer test` and the
-[browser tests](../testing#browser-tests).
+When you change or delete one, update the tests listed next to it, then run `ddev composer test`
+and the [browser tests](../testing#browser-tests).
 
-### A single-language site
+### Languages
 
-The skeleton is in English and Italian. For one language:
-
-1. In `config/app.php`, list only your language in `languages` (and set `language` to it).
-2. Delete the other language's files: `translations/it.php`, and its content versions, including
-   the tests' own content (`find content tests/data/content -name '*.it.md' -delete`): a translation
-   in a language that isn't configured is an error.
-3. Delete or adapt the tests about the second language: `tests/e2e/languages.spec.js`, and the
-   `/it/…` requests in `tests/PagesTest.php`, `tests/ContactTest.php`, `tests/CdnTest.php`,
-   `tests/BlogPagesTest.php` and `tests/e2e/contact.spec.js`.
-
-The language switcher disappears by itself when there's only one language.
+`site:clean` leaves an English-only site; the language switcher disappears by itself with one
+language. For another language, or several: list them in `languages` in `config/app.php` (and set
+`language` to the main one), add `translations/<code>.php`, and give pages and posts their
+`index.<code>.md` versions ([Languages](../features/languages)). An Italian-only site: change
+`language` and `languages` to `it`, and copy `translations/it.php` from the skeleton.
 
 ### The style guide
 
@@ -71,7 +79,8 @@ engines, the sitemap or the menus.
 - [ ] While designing: keep it, and give the address to your designer.
 - [ ] Before going live: keep it (it's harmless) or delete `content/pages/style-guide/` and the test
       that checks it (`testTheStyleGuideShowsEveryElementButStaysUnlisted` in `tests/PagesTest.php`,
-      `tests/e2e/style-guide.spec.js`).
+      `tests/e2e/style-guide.spec.js`); the image and video browser tests open it too, point them at
+      a page of yours.
 
 ## 4. Contact and privacy
 

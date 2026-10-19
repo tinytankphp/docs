@@ -26,7 +26,12 @@ Composer copies the skeleton, installs the framework (the `tinytank/framework` p
 - creates `.env` with a fresh `APP_SECRET`, the local address and debug mode on;
 - lets git track `composer.lock`, so every server installs exactly what you tested;
 - points CI at that lock file, and removes the files about developing TinyTank itself
-  (`ROADMAP.md`, `CONTRIBUTING.md`, TinyTank's `LICENSE` and `SECURITY.md`).
+  (`ROADMAP.md`, `CONTRIBUTING.md`, TinyTank's `LICENSE` and `SECURITY.md`);
+- asks whether to keep **the examples** (Datastar demos, an FAQ, sample posts, an Italian
+  translation): keep them to learn from, and remove them later with `php bin/console site:clean`
+  ([Starting a site](./checklist#_3-the-starter-content)). Without a terminal (`--no-interaction`)
+  it keeps them. Run by hand, `php bin/create-site.php --remove-examples` (or `--keep-examples`)
+  decides up front.
 
 ::: details With GitHub's "Use this template" button
 On [tinytankphp/tinytank](https://github.com/tinytankphp/tinytank), click **Use this template** to
