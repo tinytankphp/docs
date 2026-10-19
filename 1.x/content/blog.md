@@ -6,7 +6,7 @@ part of an SEO strategy). Posts are files in `content/blog/`; there's no databas
 ## What you get
 
 - **`/blog`**: the newest posts, with live search and tag filters (Datastar)
-- **`/blog/page/2`, `/blog/page/3`…**: older posts, with numbered page links and a **Load more** button
+- **`/blog/page/2`, `/blog/page/3`…**: older posts, with numbered page links
 - **`/blog/<slug>`**: a post, with its own title, description, Open Graph tags and JSON-LD
 - **`/blog/feed.xml`**: an Atom feed of the latest posts
 - every published post in **`/sitemap.xml`**
@@ -41,11 +41,10 @@ content/blog/
 `/blog/page/1` redirects to `/blog`, and pages past the end are a 404. Each page has its own title
 ("Blog · Page 2") and canonical URL.
 
-The pager in `templates/_partials/blog-pager.twig` is two pagers in one:
-
-- **without JavaScript** (search engines, no-JS visitors): numbered page links with Newer / Older
-- **with JavaScript**: Datastar hides those links and shows **Load more**, which appends the next
-  page in place. It also works inside search and tag results.
+The pager in `templates/_partials/blog-pager.twig` has numbered page links with Newer / Older: each
+page has a URL, for search engines, visitors without JavaScript and links you share. Search and tag
+results have no URLs of their own, so there the pager is a **Load more** button instead
+(`_partials/blog-more.twig`), which appends the next matches in place.
 
 The number of posts per page is `blog.per_page` in `config/app.php`, which reads `BLOG_PER_PAGE`
 (default 20). Set `BLOG_PER_PAGE=1` in `.env` to try pagination with only a few posts.
