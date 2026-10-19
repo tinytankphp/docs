@@ -29,6 +29,7 @@ title: About us                 (required)
 summary: Who we are             (optional: meta description; defaults to the first paragraph)
 image: team.jpg                 (optional share image: a file in the folder, a /path or an https URL)
 template: pages/about.twig      (optional: its own template instead of page.twig)
+children: {template: pages/review.twig}  (optional: the template of its child pages)
 order: 1                        (optional: for menus)
 updated: 2026-10-01             (optional: last significant change, for the sitemap)
 data:                           (optional: anything else the template needs)
@@ -118,6 +119,20 @@ We read every message and usually answer within two days.
 
 The form posts to a route of your own (`contact_send` in `config/routes.php`). The texts in `data`
 are translated with the page: `index.it.md` gives its own `data`.
+
+A section whose pages share a template, such as reviews under `/reviews`, sets it once on the parent
+instead of in every child:
+
+```md
+---
+title: Reviews
+template: pages/reviews.twig            # the list
+children: {template: pages/review.twig} # each review
+---
+```
+
+Its child pages without a `template:` of their own use `pages/review.twig` (its direct children
+only, in every language).
 
 ## Menus and child pages
 
