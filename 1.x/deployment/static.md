@@ -10,11 +10,7 @@ php bin/console build:static --base-url=https://example.com
 ```
 
 The whole site is now in `deploy/`, ready for [Cloudflare Workers](https://developers.cloudflare.com/workers/static-assets/)
-(free for most sites). Publish it with Cloudflare's command line tool:
-
-```sh
-cd deploy && npx wrangler deploy
-```
+(free for most sites); [Publishing](#publishing) puts it online.
 
 
 ## How it works
@@ -50,6 +46,7 @@ Optional, in `config/app.php`:
     'paths' => ['/style-guide'],          // pages nothing links to
     'host' => 'cloudflare',               // or 'none', or your own class (below); or --host
     'name' => 'my-site',                  // the Worker's name on Cloudflare (default: the site's name)
+    'domains' => ['example.com'],         // your domains on Cloudflare (default: the workers.dev address)
 ],
 ```
 
@@ -94,6 +91,41 @@ final class MyHost implements HostAdapter
     public function files(Build $build): array { … }
 }
 ```
+
+## Publishing
+
+On Cloudflare Workers, with Cloudflare's command line tool, `wrangler` (it needs Node.js; `npx`
+fetches it):
+
+1. Set the site's public address and domain in `config/app.php`. The domain must be managed by
+   Cloudflare (its DNS on Cloudflare); Cloudflare points it at the site and makes its certificate:
+
+   ```php
+   'static' => [
+       'base_url' => 'https://example.com',
+       'domains' => ['example.com'],
+   ],
+   ```
+
+2. Build: `php bin/console build:static` (with DDEV, `ddev exec php bin/console build:static`).
+
+3. Publish, from a terminal on your computer (the login opens a browser to authorize wrangler, which
+   a container can't receive):
+
+   ```sh
+   cd deploy
+   npx wrangler login     # once
+   npx wrangler deploy
+   ```
+
+   The first deploy creates the Worker (named after `static.name`, or the site) and connects the
+   domains; later ones replace the files. Without `domains`, the site is at
+   `https://<name>.<your-account>.workers.dev`.
+
+4. Check the live site: its pages, and a message through each form.
+
+Each deploy publishes everything again, so it's always the build's exact copy; Cloudflare keeps
+earlier versions, to roll back in its dashboard.
 
 ## What needs the server
 
@@ -160,8 +192,12 @@ Every page stays a plain file; the Worker only runs for the form.
    ```php
    'contact' => [
        'fields' => [...],
-       'to' => getenv('CONTACT_TO'),        // your inbox, verified at Cloudflare (step 3)
-       'static' => ['from' => 'contact@forms.example.com'],
+       'to' => getenv('CONTACT_TO'),        // the PHP site's recipient (in development, DDEV's Mailpit)
+       'static' => [
+           'from' => 'contact@forms.example.com',
+           'to' => 'you@example.com',        // the static site's: your inbox, verified at Cloudflare (step 3);
+       ],                                    // without it, the form's `to`
+
    ],
    ```
 
@@ -181,10 +217,10 @@ Every page stays a plain file; the Worker only runs for the form.
      **subdomain** for the sender, like `forms.example.com`, so your domain's own mail isn't
      touched (Cloudflare adds the records to the subdomain only). If it offers to set up the main
      domain, decline when another mail server receives it.
-   - Under **Destination addresses**, add your inbox (the form's `to`) and confirm it from the
-     email Cloudflare sends.
+   - Under **Destination addresses**, add your inbox (the form's `static.to`) and confirm it from
+     the email Cloudflare sends.
    - Sending only to your own verified addresses is free; the Worker's email binding is locked to
-     the form's `to`, so it can't be used to write to anyone else.
+     the form's recipients, so it can't be used to write to anyone else.
 
 4. Build and publish (`build:static`, then `npx wrangler deploy` in `deploy/`), and send yourself a
    message.
