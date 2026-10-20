@@ -149,6 +149,12 @@ only with `csp_allow()`, and mention them on your privacy page.
 - Tell visitors what happens to their details. The skeleton's form says "We use your details only to
   reply to you" with a link to the Privacy page, which has a paragraph about the form.
 
+## On a static site
+
+A static build has no PHP to receive the form, but its host can: with `'static' => ['from' => …]`
+in the form's definition, Cloudflare checks and emails it, with the same rules and messages. See
+[Static builds → Forms](../deployment/static#forms).
+
 ## Testing forms
 
 `KernelTestCase::request()` takes form fields:
