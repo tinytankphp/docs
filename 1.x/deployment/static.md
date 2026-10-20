@@ -95,7 +95,7 @@ final class MyHost implements HostAdapter
 ## Publishing
 
 On Cloudflare Workers, with Cloudflare's command line tool, `wrangler` (it needs Node.js; `npx`
-fetches it):
+fetches it, or install it in the site with `npm i -D wrangler`):
 
 1. Set the site's public address and domain in `config/app.php`. The domain must be managed by
    Cloudflare (its DNS on Cloudflare); Cloudflare points it at the site and makes its certificate:
@@ -107,20 +107,32 @@ fetches it):
    ],
    ```
 
-2. Build: `php bin/console build:static` (with DDEV, `ddev exec php bin/console build:static`).
+2. Create an API token, so wrangler can publish without a browser login (which a container can't
+   receive): in the Cloudflare dashboard, **My Profile** → **API Tokens** → **Create Token**, the
+   **Edit Cloudflare Workers** template, limited to your account and the site's zone. Put it in
+   `.env` with your account ID (on the dashboard's home page, or any domain's overview):
 
-3. Publish, from a terminal on your computer (the login opens a browser to authorize wrangler, which
-   a container can't receive):
-
-   ```sh
-   cd deploy
-   npx wrangler login     # once
-   npx wrangler deploy
+   ```ini
+   CLOUDFLARE_API_TOKEN=…
+   CLOUDFLARE_ACCOUNT_ID=…
    ```
 
-   The first deploy creates the Worker (named after `static.name`, or the site) and connects the
-   domains; later ones replace the files. Without `domains`, the site is at
-   `https://<name>.<your-account>.workers.dev`.
+   `.env` is never committed, and nothing from it is written in the build.
+
+3. Build and publish:
+
+   ```sh
+   php bin/console publish:static          # with DDEV: ddev exec php bin/console publish:static
+   ```
+
+   It runs `build:static`, then `wrangler deploy` in the output folder (`--no-build` publishes the
+   existing build; `--dry-run` only shows the command). The first deploy creates the Worker (named
+   after `static.name`, or the site) and connects the domains; later ones replace the files. Without
+   `domains`, the site is at `https://<name>.<your-account>.workers.dev`.
+
+   Rather log in through a browser? From a terminal on your computer: `npx wrangler login` once,
+   then `npx wrangler deploy` in `deploy/` after each `build:static` (forms sent over SMTP need
+   their secrets once: `npx wrangler secret put SMTP_PASSWORD`, and the same for the other keys).
 
 4. Check the live site: its pages, and a message through each form.
 
@@ -184,8 +196,15 @@ the whole list is one request.
 
 A form from `config/forms.php` keeps working on a static site when its host can send it. On
 Cloudflare, the build adds a small Worker that answers the form, checks it like the PHP site does
-and emails it to you, for free, through [Email Routing](https://developers.cloudflare.com/email-routing/).
-Every page stays a plain file; the Worker only runs for the form.
+and emails it to you. Every page stays a plain file; the Worker only runs for the form. It sends in
+one of two ways (`static.send`):
+
+- **`smtp`: your own mail server** (your domain's mailbox, your email provider's SMTP), on
+  Cloudflare's free plan. The Worker connects to it like a mail program: port 465 (TLS), 587
+  (STARTTLS) or 25.
+- **`cloudflare`** (the default): Cloudflare's [Email Service](https://developers.cloudflare.com/email-service/),
+  through a binding locked to the form's recipients. It needs a paid Workers plan and the sending
+  domain set up there.
 
 1. Give the form a sender, in `config/forms.php`:
 
@@ -194,12 +213,15 @@ Every page stays a plain file; the Worker only runs for the form.
        'fields' => [...],
        'to' => getenv('CONTACT_TO'),        // the PHP site's recipient (in development, DDEV's Mailpit)
        'static' => [
-           'from' => 'contact@forms.example.com',
-           'to' => 'you@example.com',        // the static site's: your inbox, verified at Cloudflare (step 3);
-       ],                                    // without it, the form's `to`
-
+           'from' => 'contact@example.com',  // an address your mail server may send from
+           'to' => 'you@example.com',        // the static site's recipient; without it, the form's `to`
+           'send' => 'smtp',
+       ],
    ],
    ```
+
+   Rather keep the addresses out of the repository? Read them from `.env`, and leave the form
+   without `static` when they aren't set (tests, CI): `'static' => getenv('STATIC_MAIL_FROM') ? [...] : null`.
 
 2. Let the form's template post to the host in a static build: `form_action()` is the page's own
    URL on the PHP site and `/forms/<name>` in a static build, and Datastar's in-place submit is
@@ -212,18 +234,23 @@ Every page stays a plain file; the Worker only runs for the form.
        {{ form_spam('contact') }}
    ```
 
-3. Set up sending at Cloudflare, once:
-   - In the Cloudflare dashboard, **Email** → **Email Routing** for your domain: add a
-     **subdomain** for the sender, like `forms.example.com`, so your domain's own mail isn't
-     touched (Cloudflare adds the records to the subdomain only). If it offers to set up the main
-     domain, decline when another mail server receives it.
-   - Under **Destination addresses**, add your inbox (the form's `static.to`) and confirm it from
-     the email Cloudflare sends.
-   - Sending only to your own verified addresses is free; the Worker's email binding is locked to
-     the form's recipients, so it can't be used to write to anyone else.
+3. With `smtp`, put the mail server's settings in `.env`:
 
-4. Build and publish (`build:static`, then `npx wrangler deploy` in `deploy/`), and send yourself a
-   message.
+   ```ini
+   SMTP_HOST=mail.example.com
+   SMTP_PORT=465
+   SMTP_USER=contact@example.com
+   SMTP_PASSWORD=…
+   ```
+
+   `publish:static` hands them to Cloudflare as the Worker's encrypted secrets, through a
+   temporary file (readable by you only, deleted right after); they're never in the build. The
+   server must accept connections from Cloudflare's addresses, as from any mail program.
+
+   With `cloudflare`, set up the sending domain in the dashboard's **Email Service** instead; the
+   build adds the binding.
+
+4. Publish (`php bin/console publish:static`) and send yourself a message.
 
 What happens on the static site:
 
@@ -241,7 +268,7 @@ own rules (`$app->forms->rule()`), and a custom email template (`_emails/<form>.
 email lists every field, like the default template.
 
 ::: tip Privacy
-The message goes through Cloudflare (your host) to you, and isn't stored. Say so on your privacy
+The message goes through Cloudflare (your host), and your mail server with `smtp`, to you, and isn't stored. Say so on your privacy
 page.
 :::
 
