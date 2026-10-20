@@ -115,7 +115,7 @@ about visitors leaves the site.
 | `honeypot` | a field hidden from people (off-screen, out of the tab order, hidden from screen readers) that bots fill in | nothing |
 | `timing` | the form carries a token with the time it was shown, signed with `APP_SECRET`; sent within N seconds (default 3), it's a bot. After a day it has expired | nothing |
 | `max_links` | more than N links (default 2) is refused, with a message | nothing |
-| `rate_limit` | at most N messages per visitor (`'5/hour'`, `'20/day'`) | a keyed hash of the IP (HMAC with `APP_SECRET`, which can't be turned back into the address), in `var/cache/forms/`, only for the length of the window |
+| `rate_limit` | at most N messages per visitor (`'5/hour'`, `'20/day'`) | a keyed hash of the IP (HMAC with `APP_SECRET`, which can't be turned back into the address), in `var/state/forms/` (kept across deploys), only for the length of the window |
 
 A bot caught by the honeypot or the timing sees "sent" like everyone else, so it learns nothing. Too
 many links or messages get a message, since a person can act on it. The log records that a form was

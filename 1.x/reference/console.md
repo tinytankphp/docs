@@ -6,21 +6,36 @@ php bin/console list        # in DDEV: ddev console list
 
 ## `deploy`
 
-Optimizes the autoloader, rebuilds every cache, publishes post files and refreshes the web
-server's Opcache. See [Deploying](../deployment/) for the options and
-[Deploy steps](../extending/deploy-steps) for the steps.
+Checks the site, optimizes the autoloader, builds every cache and the published files aside, then
+switches the site to them and refreshes the web server's Opcache. See [Deploying](../deployment/)
+for the options and [Deploy steps](../extending/deploy-steps) for the steps.
 
 ```sh
 php bin/console deploy [--list-steps] [--skip=a,b] [--assets] [--opcache=cachetool|reload|none]
                        [--fcgi=…] [--cachetool=…] [--reload-cmd=…] [--composer=…] [--no-dev]
-                       [--skip-composer] [--skip-opcache]
+                       [--skip-composer] [--skip-opcache] [--rollback]
 ```
 
-Exit codes: `0` deployed, `1` a step failed, `2` invalid options (nothing was changed).
+Exit codes: `0` deployed, `1` a step failed (the live site is as it was, unless the failing step
+came after `switch`), `2` invalid options (nothing was changed). `--rollback` puts the previous
+build back.
+
+## `check`
+
+Checks the server and the site are ready to deploy, without changing anything: PHP and its
+extensions, the image library, `APP_SECRET` and `APP_URL`, writable folders, content, templates,
+pages hidden by routes, the Vite build. `deploy` runs it first. See
+[Checking first](../deployment/#checking-first).
+
+| Option | |
+|---|---|
+| `--json` | the results as JSON: `{"ok": true, "checks": [{"check", "status", "message"}…]}` |
+
+Exit codes: `0` no errors (warnings allowed), `1` errors.
 
 ## `cache:clear`
 
-Deletes everything in `var/cache` (keeping `.gitkeep`) and the post, page and collection files
+Deletes everything in `var/cache` (keeping `.gitkeep`) and `var/deploy`, and the post, page and collection files
 published to `public/media/blog/`, `public/media/pages/` and `public/media/collections/`. If a deploy left the Composer autoloader authoritative, it also runs
 `composer dump-autoload`, so new classes are found again. Run it when you go back to development
 after a deploy.

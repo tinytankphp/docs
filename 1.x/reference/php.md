@@ -11,6 +11,7 @@ argument of `config/routes.php` and `config/bootstrap.php`.
 | Member | |
 |---|---|
 | `Kernel::boot(string $root, ?bool $debug = null, array $overrides = [])` | builds the app from `config/` |
+| `Kernel::serve(string $root)` | `public/index.php`: boots the app and answers the request; if it can't start, a plain 500 page and the reason in PHP's log (rethrown with `APP_DEBUG=1`) |
 | `run()` | handles the current HTTP request (`public/index.php`) |
 | `handle(Request $request): Response` | handles any request; used by tests |
 | `get(path, handler, name, requirements, priority = 0)`, `post(…)` | add a route |

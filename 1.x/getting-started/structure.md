@@ -20,7 +20,9 @@ my-site/
 ├── tests/                   Your app's tests
 ├── translations/            UI texts per language: en.php, it.php, …
 ├── var/cache/               Compiled caches (safe to delete)
+├── var/deploy/              deploy's next build, and the previous one (for deploy --rollback)
 ├── var/log/                 The log, one file per day (see Logging)
+├── var/state/               Kept across deploys: the forms' rate limits
 ├── vendor/tinytank/framework/  ★ The framework, installed by Composer: never edit it
 ├── .env                     Local environment (never committed)
 ├── AGENTS.md                Instructions for AI coding agents (CLAUDE.md points to it)

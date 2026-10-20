@@ -134,11 +134,81 @@ sits on its own line.
 
 ## Permissions
 
-`var/cache` must be writable by the deploy user and readable by PHP. If PHP ever finds a cache file
-missing (say, after `cache:clear` without a deploy), it rebuilds it on the fly, so it then needs write
-access too.
+`var/cache` and `var/deploy` must be writable by the deploy user, and `var/cache` readable by PHP. If
+PHP ever finds a cache file missing (say, after `cache:clear` without a deploy), it rebuilds it on
+the fly, so it then needs write access too.
 
-`var/log` must be writable by PHP (see [Logging](../features/logging)).
+`var/log` and `var/state` must be writable by PHP (see [Logging](../features/logging); `var/state`
+holds the forms' rate limits). `bin/console check`, run as the deploy user, checks the folders it
+writes to.
+
+## Release directories
+
+`deploy` already builds aside and switches at the end, which is enough for most sites. On a server
+where you control the web root, you can go one step further and give each release its own folder,
+with a `current` link to the live one, as [Deployer](https://deployer.org) does: the code changes
+at the same moment as the cache, and going back is moving the link.
+
+```
+/var/www/example.com/
+├── current -> releases/42     the web root is current/public
+├── releases/41/, releases/42/  one checkout each, built in place
+└── shared/                    the same in every release: .env, var/images, var/state, var/log
+```
+
+A `deploy.php` for Deployer 7 (`composer require --dev deployer/deployer`, then `vendor/bin/dep deploy`):
+
+```php
+<?php
+
+namespace Deployer;
+
+require 'recipe/common.php';
+
+set('repository', 'git@github.com:you/example.com.git');
+set('keep_releases', 5);
+// Kept across releases: the environment, encoded images, rate limits, logs, video posters.
+set('shared_files', ['.env']);
+set('shared_dirs', ['var/images', 'var/state', 'var/log', 'public/media/embeds']);
+set('writable_dirs', ['var/cache', 'var/deploy', 'var/images', 'var/state', 'var/log']);
+
+host('example.com')->set('deploy_path', '/var/www/example.com');
+
+desc('Builds the release (before it goes live)');
+task('tinytank:build', function () {
+    cd('{{release_path}}');
+    run('npm ci && npm run build');
+    // Opcache is handled after the switch (below): the release's paths are new to PHP.
+    run('php bin/console deploy --opcache=none');
+});
+
+desc('Clears PHP-FPM\'s Opcache');
+task('php-fpm:reload', function () {
+    run('sudo systemctl reload php8.4-fpm');
+});
+
+task('deploy', ['deploy:prepare', 'deploy:vendors', 'tinytank:build', 'deploy:publish']);
+after('deploy:symlink', 'php-fpm:reload');
+after('deploy:failed', 'deploy:unlock');
+```
+
+Point the web server at the link, and have PHP see the real path of each release, so Opcache never
+mixes two releases' files:
+
+```nginx
+root /var/www/example.com/current/public;
+
+location ~ \.php$ {
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+    fastcgi_param DOCUMENT_ROOT $realpath_root;
+    # …as above
+}
+```
+
+Going back is `vendor/bin/dep rollback` (the previous release, code and cache together), then the
+same FPM reload. (`deploy --rollback` has nothing to go back to there: each release is a fresh
+checkout, built once.)
 
 ## Access logs
 

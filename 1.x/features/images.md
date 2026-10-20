@@ -141,3 +141,7 @@ loaded. The skeleton's content column is at most `48rem` wide; change it if your
 PHP's **GD** or **Imagick** extension with WebP support, which nearly every host has. AVIF is used
 when the extension supports it too (GD with libavif, or Imagick); otherwise images get WebP only.
 [Intervention Image](https://image.intervention.io) does the work, with Imagick when it's installed.
+
+Without either, the site still runs and shows images as they are, in a plain `<img>`; but `deploy`
+can't publish the content's images, since it can't remove their metadata. `bin/console check` says
+so before you deploy.

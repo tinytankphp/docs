@@ -64,3 +64,4 @@ only meant for overrides (mostly in tests):
 | `forms` | `config/forms.php` | form definitions, instead of the file |
 | `globals` | `config/globals.php` | template globals, instead of the file |
 | `images_dir` | `<root>/var/images` | where encoded images are kept (tests use a temporary folder) |
+| `state_dir` | `<root>/var/state` | what's kept across deploys: the forms' rate limits (tests use a temporary folder) |
