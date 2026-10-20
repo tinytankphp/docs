@@ -43,6 +43,26 @@ It lists everything first and asks. Unbalanced markers stop it before anything c
 | `--dry-run` | only list what would go |
 | `--force`, `-f` | don't ask |
 
+## `build:static`
+
+Renders the whole site into plain files for a static host ([Static builds](../deployment/static)).
+
+| Option | |
+|---|---|
+| `--out` | the output folder (default `static.out`, or `deploy`) |
+| `--base-url` | the published site's address (default `static.base_url`, or `APP_URL`) |
+| `--host` | `cloudflare` (default), `none`, or a `HostAdapter` class |
+| `--allow-dynamic` | succeed even when pages use what needs the server (listed as a warning) |
+
+Exit codes: `0` built, `1` broken links, pages that need the server, or the host's limits, `2` wrong
+options.
+
+## `preview:static`
+
+Serves the static build locally, as its host will: Cloudflare's local server for the `cloudflare`
+host, or PHP's with `--php`. Options: `--port` (8080), `--ip` (`0.0.0.0`), `--out`, `--php`,
+`--dry-run`. See [Preview](../deployment/static#preview).
+
 ## `cdn:purge`
 
 Drops pages from the CDN's cache ([CDN caching](../deployment/cdn)), with the purger set by
