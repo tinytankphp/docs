@@ -21,14 +21,18 @@ component, so placeholders, requirements and named routes behave as they do in S
 ## Defining routes
 
 ```php
-$app->get(string $path, $handler, ?string $name = null, array $requirements = [], int $priority = 0);
+$app->get(string $path, $handler, ?string $name = null, array $requirements = [], int $priority = 0, bool $sitemap = true);
 $app->post(string $path, $handler, ?string $name = null, array $requirements = []);
-$app->route(string|array $methods, string $path, $handler, ?string $name = null, array $requirements = [], bool $csrf = true, int $priority = 0);
+$app->route(string|array $methods, string $path, $handler, ?string $name = null, array $requirements = [], bool $csrf = true, int $priority = 0, bool $sitemap = true);
 ```
 
 `route()` takes one or several HTTP methods (`['PUT', 'PATCH']`) and can switch off the
 [CSRF check](../security#csrf-protection) for a route that must accept requests from other sites,
 such as a webhook (`csrf: false`).
+
+A GET route without placeholders is listed in `/sitemap.xml`; `sitemap: false` keeps out a page
+that isn't one on its own, such as the list of posts the blog's search loads
+(`$app->get('/blog/search', …, 'blog_search', sitemap: false)`).
 
 Routes are tried in the order they're defined, higher `priority` first. A catch-all such as the
 [content pages](../content/pages) route (`/{path}`) uses `priority: -1`, so every other route wins,
