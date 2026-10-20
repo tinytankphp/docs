@@ -14,6 +14,8 @@ lists them all.
 | `CDN_CACHE` | no | off | `1` = cache pages at the CDN ([CDN caching](../deployment/cdn)) |
 | `CDN_PURGE` | no | | How to purge the CDN: `cloudflare`, `bunny` or `command` |
 | `CLOUDFLARE_ZONE_ID`, `CLOUDFLARE_API_TOKEN` | for Cloudflare purging | | The zone, and a token with only the Cache Purge permission |
+| `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` | for `publish:static` | | A token with the Workers permissions, and its account ([Publishing](../static-site-generator/publishing)). A static site has no CDN purging, so the name is free |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD` | for static forms sent over SMTP | `SMTP_PORT` 465 | Your mail server, set as the Worker's secrets by `publish:static` ([Forms](../static-site-generator/forms)). Passwords in single quotes |
 | `BUNNY_PULL_ZONE_ID`, `BUNNY_API_KEY` | for Bunny purging | | The pull zone's number and the account's API key |
 | `CDN_PURGE_CMD` | for `command` purging | | A command run with the URLs as arguments, none for everything |
 | `LOG_ALERT_TO` | no | | Email errors to this address (comma-separated for several), see [Logging](../features/logging) |

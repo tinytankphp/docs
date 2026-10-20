@@ -153,7 +153,7 @@ only with `csp_allow()`, and mention them on your privacy page.
 
 A static build has no PHP to receive the form, but its host can: with `'static' => ['from' => …]`
 in the form's definition, Cloudflare checks and emails it, with the same rules and messages. See
-[Static builds → Forms](../deployment/static#forms).
+[Static Site Generator → Forms](../static-site-generator/forms).
 
 ## Testing forms
 

@@ -116,12 +116,26 @@ export default defineConfig({
                     ],
                 },
                 {
+                    text: 'Static Site Generator',
+                    items: [
+                        { text: 'Overview', link: `${v1}/static-site-generator/` },
+                        { text: 'How it works', link: `${v1}/static-site-generator/how-it-works` },
+                        { text: 'Configuration', link: `${v1}/static-site-generator/configuration` },
+                        { text: 'What needs the server', link: `${v1}/static-site-generator/what-needs-the-server` },
+                        { text: 'Search', link: `${v1}/static-site-generator/search` },
+                        { text: 'Forms', link: `${v1}/static-site-generator/forms` },
+                        { text: 'Hosts', link: `${v1}/static-site-generator/hosts` },
+                        { text: 'Preview', link: `${v1}/static-site-generator/preview` },
+                        { text: 'Publishing', link: `${v1}/static-site-generator/publishing` },
+                        { text: 'Troubleshooting', link: `${v1}/static-site-generator/troubleshooting` },
+                    ],
+                },
+                {
                     text: 'Going live',
                     items: [
                         { text: 'Deploying', link: `${v1}/deployment/` },
                         { text: 'Servers & Opcache', link: `${v1}/deployment/servers` },
                         { text: 'CDN caching', link: `${v1}/deployment/cdn` },
-                        { text: 'Static builds', link: `${v1}/deployment/static` },
                         { text: 'Testing', link: `${v1}/testing` },
                         { text: 'Security', link: `${v1}/security` },
                         { text: 'Contributing', link: `${v1}/contributing` },

@@ -45,7 +45,7 @@ It lists everything first and asks. Unbalanced markers stop it before anything c
 
 ## `build:static`
 
-Renders the whole site into plain files for a static host ([Static builds](../deployment/static)).
+Renders the whole site into plain files for a static host ([Static Site Generator](../static-site-generator/)).
 
 | Option | |
 |---|---|
@@ -61,7 +61,16 @@ options.
 
 Serves the static build locally, as its host will: Cloudflare's local server for the `cloudflare`
 host, or PHP's with `--php`. Options: `--port` (4173), `--ip` (`0.0.0.0`), `--out`, `--php`,
-`--dry-run`. See [Preview](../deployment/static#preview).
+`--dry-run`. See [Preview](../static-site-generator/preview).
+
+## `publish:static`
+
+Builds the static site and publishes it on Cloudflare Workers (`wrangler deploy`), with
+`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` from `.env`; forms sent over SMTP get the
+`SMTP_*` keys as the Worker's secrets. Options: `--no-build`, `--dry-run`. See
+[Publishing](../static-site-generator/publishing).
+
+Exit codes: `0` published, `1` the build or wrangler failed, `2` missing settings.
 
 ## `cdn:purge`
 

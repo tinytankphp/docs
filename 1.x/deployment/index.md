@@ -1,5 +1,9 @@
 # Deploying
 
+This page puts the **PHP site** on a server. To publish the site as plain files instead, with no
+PHP on the host (Cloudflare Workers, free for most sites), see the
+[Static Site Generator](../static-site-generator/).
+
 ## The deploy command
 
 ```sh
