@@ -60,7 +60,7 @@ options.
 ## `preview:static`
 
 Serves the static build locally, as its host will: Cloudflare's local server for the `cloudflare`
-host, or PHP's with `--php`. Options: `--port` (8080), `--ip` (`0.0.0.0`), `--out`, `--php`,
+host, or PHP's with `--php`. Options: `--port` (4173), `--ip` (`0.0.0.0`), `--out`, `--php`,
 `--dry-run`. See [Preview](../deployment/static#preview).
 
 ## `cdn:purge`
