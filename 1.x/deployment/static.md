@@ -117,7 +117,9 @@ fetches it, or install it in the site with `npm i -D wrangler`):
    CLOUDFLARE_ACCOUNT_ID=…
    ```
 
-   `.env` is never committed, and nothing from it is written in the build.
+   `.env` is never committed, and nothing from it is written in the build. If wrangler answers "No
+   access to the specified resource", the token lacks a permission: the template's **Account →
+   Workers Scripts: Edit** at least (and **Zone → Workers Routes: Edit** for `domains`).
 
 3. Build and publish:
 
@@ -243,8 +245,8 @@ one of two ways (`static.send`):
    SMTP_PASSWORD=…
    ```
 
-   `publish:static` hands them to Cloudflare as the Worker's encrypted secrets, through a
-   temporary file (readable by you only, deleted right after); they're never in the build. The
+   `publish:static` hands them to Cloudflare as the Worker's encrypted secrets, after each deploy
+   (`wrangler secret bulk`, on its input: never in a file); they're never in the build. The
    server must accept connections from Cloudflare's addresses, as from any mail program.
 
    With `cloudflare`, set up the sending domain in the dashboard's **Email Service** instead; the
