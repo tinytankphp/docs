@@ -108,9 +108,19 @@ fetches it, or install it in the site with `npm i -D wrangler`):
    ```
 
 2. Create an API token, so wrangler can publish without a browser login (which a container can't
-   receive): in the Cloudflare dashboard, **My Profile** → **API Tokens** → **Create Token**, the
-   **Edit Cloudflare Workers** template, limited to your account and the site's zone. Put it in
-   `.env` with your account ID (on the dashboard's home page, or any domain's overview):
+   receive). In the Cloudflare dashboard, **Manage Account** → **Account API Tokens** →
+   **Create Token** (or **My Profile** → **API Tokens** for one tied to you), and give it **two
+   policies**. Workers permissions belong to the account, so a policy limited to a domain doesn't
+   grant them, even with the right boxes ticked:
+
+   | Policy | Resource | Permissions |
+   |---|---|---|
+   | 1 | your account | **Workers Scripts: Edit**, **Account Settings: Read**, **Workers Tail: Read** (for `wrangler tail`, the forms' logs) |
+   | 2 | **Specified Domains** → the site's domain | **Workers Routes: Edit** (connects `domains` to the Worker) |
+
+   The **Edit Cloudflare Workers** template ticks these and more (KV, R2, Pages…, not needed);
+   check the template didn't put them all under the domain's policy. Copy the token (shown once)
+   into `.env`, with your account ID (on the dashboard's home page, or any domain's overview):
 
    ```ini
    CLOUDFLARE_API_TOKEN=…
@@ -118,8 +128,8 @@ fetches it, or install it in the site with `npm i -D wrangler`):
    ```
 
    `.env` is never committed, and nothing from it is written in the build. If wrangler answers "No
-   access to the specified resource", the token lacks a permission: the template's **Account →
-   Workers Scripts: Edit** at least (and **Zone → Workers Routes: Edit** for `domains`).
+   access to the specified resource" or "Authentication error", the token lacks one of these, or
+   has it under the domain's policy only. Editing a token's policies keeps its value.
 
 3. Build and publish:
 
@@ -242,8 +252,12 @@ one of two ways (`static.send`):
    SMTP_HOST=mail.example.com
    SMTP_PORT=465
    SMTP_USER=contact@example.com
-   SMTP_PASSWORD=…
+   SMTP_PASSWORD='…'
    ```
+
+   Write passwords in **single quotes**: unquoted or in double quotes, `.env` reads `$NAME` as a
+   variable, and a password with a `$` reaches the server changed ("535 Authentication failed").
+   `publish:static` warns about it.
 
    `publish:static` hands them to Cloudflare as the Worker's encrypted secrets, after each deploy
    (`wrangler secret bulk`, on its input: never in a file); they're never in the build. The
@@ -252,7 +266,11 @@ one of two ways (`static.send`):
    With `cloudflare`, set up the sending domain in the dashboard's **Email Service** instead; the
    build adds the binding.
 
-4. Publish (`php bin/console publish:static`) and send yourself a message.
+4. Publish (`php bin/console publish:static`) and send yourself a message. If you get "Your
+   message wasn't sent", the Worker's log says why: run `npx wrangler tail` in `deploy/` (with the
+   token in the environment) and send again. "The mail server answered 535" is a refused login
+   (the user, the password, its quoting); a timeout is a server that doesn't accept Cloudflare's
+   connections.
 
 What happens on the static site:
 
