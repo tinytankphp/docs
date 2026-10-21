@@ -1,5 +1,13 @@
 # What is TinyTank?
 
+::: warning Status: beta (0.x)
+TinyTank runs real sites, but it's young: few sites run on it so far, and its API may still change
+between minor versions (each release's notes in the [changelog](https://github.com/tinytankphp/framework/blob/main/CHANGELOG.md) say what to
+update, see [Updating TinyTank](./extending/updating)). Review it as you would any dependency before
+relying on it, and keep it updated: security fixes go into the latest release only
+([reporting a vulnerability](./security#reporting-a-vulnerability)). Provided as is, without warranty, under the MIT license.
+:::
+
 TinyTank is a small PHP framework for sites that are **mostly static but need a little server-side
 life**: a marketing site with a blog, a documentation hub, a tool with a single interactive page.
 It gives you routing, Twig templates, reactive UI through [Datastar](https://data-star.dev), a
