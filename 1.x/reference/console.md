@@ -60,6 +60,8 @@ It lists everything first and asks. Unbalanced markers stop it before anything c
 
 ## `build:static`
 
+Also `static:build`, so the static commands group together in `bin/console list static`.
+
 Renders the whole site into plain files for a static host ([Static Site Generator](../static-site-generator/)).
 
 | Option | |
@@ -74,11 +76,15 @@ options.
 
 ## `preview:static`
 
+Also `static:preview`, so the static commands group together in `bin/console list static`.
+
 Serves the static build locally, as its host will: Cloudflare's local server for the `cloudflare`
 host, or PHP's with `--php`. Options: `--port` (4173), `--ip` (`0.0.0.0`), `--out`, `--php`,
 `--dry-run`. See [Preview](../static-site-generator/preview).
 
 ## `publish:static`
+
+Also `static:publish`, so the static commands group together in `bin/console list static`.
 
 Builds the static site and publishes it on Cloudflare Workers (`wrangler deploy`), with
 `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` from `.env`; forms sent over SMTP get the
