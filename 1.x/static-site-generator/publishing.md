@@ -73,6 +73,67 @@ earlier versions, to roll back in its dashboard.
 | `--no-build` | publish the existing build (after `build:static` and `preview:static`, say) |
 | `--dry-run` | only show the commands; nothing is built, uploaded or written |
 
+## From GitHub Actions
+
+Publish on every push to `main` whose tests pass: a second job in the site's CI workflow
+(`.github/workflows/ci.yml`), after the `test` job.
+
+```yaml
+  publish:
+    name: Publish on Cloudflare
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency:                  # one publish at a time; a newer push waits
+      group: publish
+      cancel-in-progress: false
+    env:
+      APP_URL: https://example.com
+      APP_SECRET: ${{ secrets.APP_SECRET }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      # Only for forms sent over SMTP, and the addresses config/forms.php reads from the environment:
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: intl, mbstring, gd   # gd: images are published without their metadata
+          coverage: none
+          tools: composer:v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install dependencies
+        run: |
+          composer install --no-dev --no-interaction --no-progress --prefer-dist
+          npm ci
+      - name: Build assets
+        run: npm run build
+      - name: Check
+        run: php bin/console check
+      - name: Build and publish
+        run: php bin/console publish:static
+```
+
+Then, in the repository's **Settings** → **Secrets and variables** → **Actions**, add each
+`secrets.…` above as a repository secret, with the values from your `.env`. GitHub passes them as
+environment variables, which `publish:static` reads like `.env`; nothing is written to a file, and
+GitHub hides the values in the logs. Paste a password as it is, without the quotes `.env` needs.
+
+- The site's `.env` stays on your computer: the workflow needs only these variables.
+- `composer install` uses `composer.lock`, so the site is published with the framework version it
+  was tested with.
+- `check` stops the job before anything is published if the build would break the site; it also
+  lists the image formats the runner can write (GD writes AVIF and WebP when it was built with them).
+- A failed publish shows wrangler's message in the job's log; see
+  [Troubleshooting](./troubleshooting).
+
 ## Running wrangler yourself
 
 Other wrangler commands (the forms' logs, versions, rollbacks) read the same token with
