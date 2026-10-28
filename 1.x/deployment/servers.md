@@ -79,6 +79,14 @@ root /var/www/my-site/public;
 
 location /build/ { expires 1y; add_header Cache-Control "public, immutable"; }
 location /media/ { expires 7d; add_header Cache-Control "public"; try_files $uri /index.php?$query_string; }
+# SVG images can contain scripts: opened on their own, they run none (see "SVG files" below)
+location ~* ^/media/.+\.svg$ {
+    expires 7d;
+    add_header Cache-Control "public";
+    add_header Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; sandbox" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    try_files $uri /index.php?$query_string;
+}
 location / { try_files $uri /index.php?$query_string; }
 
 location ~ \.php$ {
@@ -113,9 +121,27 @@ DocumentRoot /var/www/my-site/public
 <Location /media/>
     Header set Cache-Control "public, max-age=604800"
 </Location>
+# SVG images can contain scripts: opened on their own, they run none (see "SVG files" below)
+<LocationMatch "^/media/.+\.svg$">
+    Header always set Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; sandbox"
+    Header always set X-Content-Type-Options "nosniff"
+</LocationMatch>
 ```
 
 With mod_php, drop the `FilesMatch` and `Proxy` blocks.
+
+### SVG files
+
+An SVG is a document, not just a picture: it can contain scripts. Shown with `<img>` they never run,
+but someone could link straight to `/media/blog/post/logo.svg`, and then they'd run on your site's
+address. The rules above give SVG files a policy that allows no scripts and no requests (`sandbox`),
+the one TinyTank sends in development. In nginx, the regex location takes precedence over
+`/media/`, so it repeats that location's caching headers.
+
+A static build on Cloudflare needs nothing more: its site-wide policy in `_headers` applies to every
+file, and its `script-src` lets no script written inside an SVG run.
+
+### Caching
 
 `/build/` files have a content hash in their name, so they're cached for a year. `/media/` files
 (post and page images, video posters) keep their name when replaced, so they get a week: a changed
@@ -142,6 +168,28 @@ To cache the pages themselves at a CDN, see [CDN caching](./cdn).
 Apache doesn't allow comments after a directive on the same line, which is why the comment above
 sits on its own line.
 :::
+
+## Health check
+
+For an uptime monitor or a load balancer, a route that answers `200` when the site works:
+
+```php
+// config/routes.php
+use Symfony\Component\HttpFoundation\Response;
+
+$app->get('/health', static function () use ($app): Response {
+    $app->noStore(); // never cached: each check asks the server itself
+    // What the site writes while it runs (the forms' rate limits).
+    $writable = is_dir($app->stateDir) ? is_writable($app->stateDir) : is_writable(dirname($app->stateDir));
+
+    return new Response($writable ? 'ok' : 'var/state is not writable', $writable ? 200 : 503, ['Content-Type' => 'text/plain']);
+}, 'health', sitemap: false);
+```
+
+An answer at all means PHP runs, the site starts (its configuration, routes and code) and requests
+reach it; `503` means it can't record what it should. There's no point in checking the compiled cache:
+in production a missing cache file is rebuilt on the first request that needs it. Point the monitor at
+`https://example.com/health`; it answers in a few milliseconds, so checking every minute costs nothing.
 
 ## Permissions
 
