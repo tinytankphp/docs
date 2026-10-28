@@ -31,9 +31,10 @@ argument of `config/routes.php` and `config/bootstrap.php`.
 | `error(status, message, headers = []): Response` | an error page |
 | `request(): Request` | the current request |
 | `addDeployStep(name, step, description, before, after)` | add a step to `deploy` |
-| `$root`, `$debug`, `$cacheDir` | project root, debug mode, cache directory |
+| `$root`, `$debug`, `$cacheDir`, `$stateDir` | project root, debug mode, cache directory, what's kept across deploys (`var/state/`) |
 | `$twig`, `$router`, `$blog`, `$seo`, `$site`, `$container`, `$translations`, `$datastar`, `$vite`, `$publicConfig`, `$csp`, `$collections`, `$pages` | TinyTank's services |
 | `$cdn` | CDN caching and purging: `skip()` keeps the current response out of the CDN, `usePurger()`, `purger()`, `url()` ([CDN caching](../deployment/cdn)) |
+| `noStore()` | the current response is for one visitor: `Cache-Control: no-store, private`, no ETag, never at a CDN ([Not at the CDN, or nowhere](../deployment/cdn#not-at-the-cdn-or-nowhere)) |
 | `$logger` | the log, a Monolog `Logger` (PSR-3); also `Psr\Log\LoggerInterface` in the container ([Logging](../features/logging)) |
 
 ## Controller

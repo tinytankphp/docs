@@ -105,8 +105,8 @@ by the English text:
 
 ::: tip Pages are cached by browsers and CDNs
 TinyTank pages are public and revalidated with an ETag: a page whose content depends on the time
-is fine (the ETag changes with it), but anything personal to a visitor isn't, see
-[CDN caching](../deployment/cdn).
+is fine (the ETag changes with it), but anything personal to a visitor isn't: call
+`$this->app->noStore()` for such a response (see [CDN caching](../deployment/cdn#not-at-the-cdn-or-nowhere)).
 :::
 
 ## 3. A little interactivity

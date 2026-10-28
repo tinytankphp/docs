@@ -53,6 +53,8 @@ TinyTank decides most of this by itself:
 | What | Why |
 |---|---|
 | Pages with a form (the contact page) | Their spam check prints a new token every time; they're `no-store` |
+| A response that sets a cookie | A cookie is for one visitor: `no-store, private`, whatever its handler said |
+| A response after `$app->noStore()` | Its handler said it's for one visitor (below) |
 | The Datastar endpoint, and every request made by Datastar | They answer each request differently |
 | Errors and redirects | A cached error would be the opposite of resilience |
 | POST requests, server-sent events | Never cacheable |
@@ -77,9 +79,24 @@ cdn: false                  # a content page that changes more often than you de
 `cdn: false` applies to the page's translations too, unless they set their own. In a controller,
 `$this->app->cdn->skip()` does the same for the current response.
 
+## Not at the CDN, or nowhere
+
+Two different things, for two different reasons:
+
+| | `$app->cdn->skip()` (or `exclude`, `cdn: false`) | `$app->noStore()` |
+|---|---|---|
+| Means | "not at the CDN": the page changes too often to keep there | "nowhere": the response is for one visitor |
+| `Cache-Control` | `no-cache, public`, with an ETag: browsers still revalidate it | `no-store, private`, no ETag: nobody keeps it |
+| Use it for | a clock, today's menu, a live count | an account page, "Hi Ada", a basket |
+
+A response that sets a cookie is treated like `noStore()` by itself: TinyTank has no sessions, so a
+cookie means the response is for that visitor, and keeping it at a CDN would hand it to the next
+one. A handler that set its own `Cache-Control` (`setPrivate()`, a `max-age`…) keeps it, unless it
+also sets a cookie.
+
 ::: warning Pages that differ per visitor
-Anything shown to one visitor only (an account page, "Hi Ada") must never be `public`. TinyTank has no
-logins today; code that adds them must exclude those routes, or send `Cache-Control: private`.
+Anything shown to one visitor only must never be `public`. TinyTank has no logins today; code that
+adds them calls `$app->noStore()` in those responses (a login that sets a cookie gets it anyway).
 :::
 
 ## Purging
