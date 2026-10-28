@@ -34,6 +34,7 @@ argument of `config/routes.php` and `config/bootstrap.php`.
 | `$root`, `$debug`, `$cacheDir`, `$stateDir` | project root, debug mode, cache directory, what's kept across deploys (`var/state/`) |
 | `$twig`, `$router`, `$blog`, `$seo`, `$site`, `$container`, `$translations`, `$datastar`, `$vite`, `$publicConfig`, `$csp`, `$collections`, `$pages` | TinyTank's services |
 | `$cdn` | CDN caching and purging: `skip()` keeps the current response out of the CDN, `usePurger()`, `purger()`, `url()` ([CDN caching](../deployment/cdn)) |
+| `signals(): Signals` | the current Datastar request's signals, read with their type: `string()`, `int()`, `bool()`, `enum()`, `has()`, `all()` ([Reading signals](../basics/datastar#reading-signals)) |
 | `noStore()` | the current response is for one visitor: `Cache-Control: no-store, private`, no ETag, never at a CDN ([Not at the CDN, or nowhere](../deployment/cdn#not-at-the-cdn-or-nowhere)) |
 | `$logger` | the log, a Monolog `Logger` (PSR-3); also `Psr\Log\LoggerInterface` in the container ([Logging](../features/logging)) |
 
@@ -41,7 +42,13 @@ argument of `config/routes.php` and `config/bootstrap.php`.
 
 `TinyTank\Controller`, base class for app controllers. See [Controllers](../basics/controllers).
 
-`render()`, `stream()`, `json()`, `notFound()`, `path()`, `t()`, `get()`, `request()`, and `$this->app`.
+`render()`, `stream()`, `json()`, `notFound()`, `path()`, `t()`, `get()`, `request()`, `signals()`, and `$this->app`.
+
+## HttpError
+
+`throw new TinyTank\HttpError(403, 'Not allowed.')` from a handler: the kernel answers with that
+status's error page (in debug mode too), the message translated. 4xx and 5xx only; the message is
+shown to the visitor, so keep it short and generic.
 
 ## Site
 

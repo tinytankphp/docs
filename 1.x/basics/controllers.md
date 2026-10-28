@@ -56,6 +56,7 @@ still runs, and the ETag is computed from what it rendered.
 | `t($message, $params)` | Translates a UI text ([Languages](../features/languages)) |
 | `get($id)` | A service from the [container](../extending/bootstrap) |
 | `request()` | The current Symfony `Request` |
+| `signals()` | The request's Datastar signals, read with their type ([Reading signals](./datastar#reading-signals)) |
 
 ## The kernel
 

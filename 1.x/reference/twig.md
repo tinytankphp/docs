@@ -32,6 +32,10 @@ Plus anything your `config/bootstrap.php` adds.
 | `public_config()` | `<script type="application/json" id="tinytank-config">` with config `public`, or nothing when empty |
 | `seo_tags()` | the page's `<title>`, meta, canonical, Open Graph, Twitter, hreflang and JSON-LD |
 | `language_switcher()` | list of `{code, name, url, active, available}` for the current page |
+| `signal(name, default = '', max = 1000)` | Datastar: a signal the request sent, as text ([Reading signals](../basics/datastar#reading-signals)) |
+| `signal_int(name, default = 0, min = null, max = null)` | a signal as a whole number, within `min` and `max` |
+| `signal_bool(name, default = false)` | a signal as `true`/`false` |
+| `signal_enum(name, choices, default = first)` | a signal that must be one of `choices` |
 | `patch_signals(signals, options = {})` | Datastar: queue a signals patch (use with `do`) |
 | `remove_elements(selector, options = {})` | Datastar: queue an element removal |
 | `execute_script(script, options = {})` | Datastar: queue a script |

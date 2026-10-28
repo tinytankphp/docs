@@ -23,7 +23,7 @@ into the page by element id.
 
 ```twig
 {# templates/_partials/search.twig #}
-{% set query = (signals.query ?? '')|lower %}
+{% set query = signal('query', max: 200)|lower %}
 <ul id="results">
     {% for fruit in ['Apple', 'Banana', 'Cherry']|filter(f => query in f|lower) %}
         <li>{{ fruit }}</li>
@@ -32,8 +32,29 @@ into the page by element id.
 ```
 
 `datastar.get('_partials/search')` prints a Datastar action (`@get("/datastar?config=…")`). On the
-server, TinyTank renders the partial with the browser's **signals** in the `signals` variable. If
-the template queues no events, its whole output is patched into the page, matched by element id.
+server, TinyTank renders the partial with the browser's **signals**. If the template queues no
+events, its whole output is patched into the page, matched by element id.
+
+## Reading signals
+
+Signals come from the browser, so they can be anything: text where you expect a number, a list
+where you expect text. Read them with their type, and you always get what you asked for, or the
+default:
+
+| Twig | PHP (`$this->signals()` in a controller, `$app->signals()`) | Gives |
+|---|---|---|
+| `signal('q')`, `signal('q', 'all', max: 200)` | `->string('q', 'all', max: 200)` | the text (a number becomes its text), cut to `max` characters (1000); else the default (`''`) |
+| `signal_int('page', 1, min: 1, max: 1000)` | `->int('page', 1, min: 1, max: 1000)` | a whole number (or its text, `"2"`), kept within `min` and `max`; else the default (`0`) |
+| `signal_bool('open')` | `->bool('open')` | `true`/`false` (or `"true"`, `1`…); else the default (`false`) |
+| `signal_enum('sort', ['new', 'old'])` | `->enum('sort', ['new', 'old'])` | one of the choices; else the default (the first choice) |
+
+A name can reach into an object: `signal('form.email')`. `->all()` and `->has('name')` give the rest.
+The raw `signals` variable is still there, as sent, but `signals.page ?? 1` passes on whatever the
+browser sent: a list, a huge number.
+
+A request whose signals aren't valid JSON gets a **400**, and one larger than 64 KB a **413**: a
+browser running your page never sends either. A form that Datastar posts as a form
+(`contentType: 'form'`) has no signals; its fields are in the request, as without JavaScript.
 
 `post`, `put`, `patch` and `delete` work the same way. A second argument passes variables to the
 template:
@@ -110,6 +131,10 @@ final class ClockController extends Controller
 ```
 
 `stream()` renders the template with the request's signals, exactly like the template actions.
+In the controller, read them with their type: `$this->signals()->int('page', 1, min: 1)`.
+
+A controller can stop with an error status for the visitor: `throw new HttpError(403, 'Not allowed.')`
+(`TinyTank\HttpError`) answers with that status's error page, its message translated.
 
 ## CSRF
 
