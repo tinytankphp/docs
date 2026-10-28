@@ -44,7 +44,7 @@ The **level** says how serious a message is, from `debug` to `emergency`. Messag
 configured level aren't written: by default `debug` in development (everything) and `info` in
 production. Set `LOG_LEVEL` to change it, for example `LOG_LEVEL=warning` for a quieter log.
 
-## Privacy: what the log never contains
+## Privacy: what the log leaves out
 
 A log is personal data as soon as it can tell who visited, and under the GDPR personal data needs a
 reason to be collected, has to be protected, and can't be kept forever. Most logging setups record
@@ -72,13 +72,18 @@ far more than they need. TinyTank's log is built to answer "what broke, and wher
   and with them whatever the errors contain, on someone else's servers, often outside the EU. TinyTank's
   log stays on your server, and alerts go through your own mailer.
 
+What can still end up in it: **error messages**, which are written by whoever threw the error. A
+library's message may quote the value it refused (an address, a file name), and so may your own
+code's. They're logged as they are, because the message is what tells you what broke.
+
 So TinyTank's log describes your site, not your visitors. Your **web server's** access log is another
 matter: nginx and Apache record every request with its IP address unless you configure them not to
 (see [Servers](../deployment/servers#access-logs)).
 
 ::: tip Your own messages
-The same applies to what your code logs. Log what happened, not who did it:
-`$app->logger->info('Newsletter sent to {count} subscribers', ['count' => 120])`, not the addresses.
+The same applies to what your code logs, and to the messages of the exceptions it throws. Log what
+happened, not who did it: `$app->logger->info('Newsletter sent to {count} subscribers', ['count' => 120])`,
+not the addresses; `throw new RuntimeException('The subscriber list is empty')`, not its contents.
 :::
 
 ## Email alerts

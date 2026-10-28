@@ -41,7 +41,8 @@ return new RedirectResponse($this->path('blog'), 301);
 ```
 
 Successful GET pages automatically get an ETag and `Cache-Control: public, no-cache`, so repeat
-visits are answered with a `304`.
+visits are answered with a `304`. A `304` saves sending the page again, not making it: the action
+still runs, and the ETag is computed from what it rendered.
 
 ## Helpers
 
@@ -64,7 +65,8 @@ visits are answered with a `304`.
 |---|---|
 | `$app->seo` | Page metadata: title, description, Open Graph, JSON-LD ([SEO](../features/seo)) |
 | `$app->site` | Site name, URL, languages and the current language |
-| `$app->blog` | Blog posts: `find()`, `all()`, `page()`, `search()`, `tags()` |
+| `$app->posts()`, `$app->pages()`, `$app->collection('name')` | Queries over posts, pages and collection items: `->where()`, `->orderBy()`, `->one()`, `->all()`… ([Querying content](./querying)) |
+| `$app->blog` | The posts' source, for what queries don't do: `uri()`, `translations()`, `asset()` |
 | `$app->container` | Services registered in `config/bootstrap.php` |
 | `$app->twig` | The Twig environment |
 | `$app->debug` | Whether debug mode is on |

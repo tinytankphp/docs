@@ -204,7 +204,7 @@ const sounds = await (await fetch(document.body.dataset.soundsUrl)).json();
 ```
 
 It's an allowlist: fields not listed under `json` are never served, and collections without `json`
-have no URL. Responses carry an ETag like pages, so browsers revalidate cheaply.
+have no URL. Responses carry an ETag like pages, so a browser that already has the file gets a `304` instead.
 
 ## Errors
 

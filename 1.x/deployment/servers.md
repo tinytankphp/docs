@@ -1,5 +1,16 @@
 # Servers & Opcache
 
+## How TinyTank runs
+
+TinyTank is made for **PHP-FPM** (or Apache's mod_php): each request boots the kernel, answers and
+ends, so nothing is left over from one visitor to the next. Booting costs little, because everything
+it reads is compiled ahead of time and kept in Opcache's memory.
+
+Worker servers that keep one app in memory across requests (FrankenPHP's worker mode, RoadRunner,
+Swoole) aren't supported yet: the kernel keeps state for the request it answers (the current
+language, the page's extra CSP sources), which would carry over to the next one. FrankenPHP in its
+classic mode, one request at a time, works like PHP-FPM.
+
 ## Why Opcache needs refreshing
 
 For speed, production PHP should not check every file for changes on every request

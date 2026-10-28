@@ -30,8 +30,8 @@ compiler, the Vite helper.
 ## Every page is the same for everyone
 
 There are no sessions. CSRF protection checks the browser's origin headers instead of a token, so
-pages carry no per-visitor data and can be cached publicly (every page gets an ETag and revalidates
-with a cheap `304`). Absolute URLs come from configuration, never from the request's `Host` header,
+pages carry no per-visitor data and can be cached publicly (every page gets an ETag, and a browser
+that already has the page gets a `304` instead of it again). Absolute URLs come from configuration, never from the request's `Host` header,
 so a forged header can't poison a cached page.
 
 ## Fail loudly

@@ -2,7 +2,7 @@
 
 ```sh
 npm run build          # optional: without it, the tests that check assets are skipped
-composer test          # PHPUnit; in DDEV: ddev composer test
+composer test          # PHPUnit, your site's tests/ only; in DDEV: ddev composer test
 composer analyse       # PHPStan, level 8
 ```
 
@@ -10,7 +10,7 @@ composer analyse       # PHPStan, level 8
 
 | Suite | Where | What it tests |
 |---|---|---|
-| **app** | your site's `tests/` | your site's controllers, routes and templates, with fixture content |
+| **app** | your site's `tests/` | your site's controllers, routes and templates, with fixture content (`app()`) and its real content (`site()`) |
 | **framework** | the framework repository's `tests/` | TinyTank itself, against a fixture project and fixture content (see [Contributing](./contributing)) |
 
 Your site runs its own suite; the framework's suite runs in the framework repository's CI.
@@ -47,7 +47,7 @@ temporary cache directory. The helpers:
 |---|---|
 | `$this->app($debug = false, $overrides = [])` | boots the site with the fixture content; overrides merge over `config/app.php` (`AppTestCase`) |
 | `$this->site($debug = false, $overrides = [])` | the same with the site's real `content/`, for tests of the pages visitors see (`AppTestCase`) |
-| `$this->bootKernel($root, $debug, $overrides)` | boots any TinyTank app with a temporary cache directory (`KernelTestCase`) |
+| `$this->bootKernel($root, $debug, $overrides)` | boots any TinyTank app with temporary cache, state, images and log folders (`KernelTestCase`) |
 | `$this->request($app, $uri, $method, $headers, $body)` | handles a request |
 | `self::body($response)` | the body of any response, including Datastar streams and files |
 | `$this->datastarUrl($html, $template, $method)` | the URL of a page's Datastar action rendering `$template` (`@get`, `@post`…; `$method` to pick one) |
