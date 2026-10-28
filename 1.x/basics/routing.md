@@ -82,6 +82,34 @@ Routes without a name get one generated from the method and path, but you can't 
 Route paths are language-neutral: you declare `/about` once, and TinyTank also serves `/it/about`
 for every other configured language. See [Languages](../features/languages).
 
+## Redirects
+
+When a page moves or is renamed, keep its old address working in `config/redirects.php`: the old
+path and where it went.
+
+```php
+return [
+    '/old-page' => '/new-page',                            // 301, moved for good
+    '/it/vecchia' => '/it/nuova',                          // each language's path as it is
+    '/summer-sale' => ['to' => '/offers', 'status' => 302], // temporary (also 307, 308)
+    '/docs' => 'https://docs.example.com',                 // another site
+];
+```
+
+- They're answered **first**, before languages and routes, so the old path doesn't need to exist.
+- The query string is kept (`/old-page?ref=x` → `/new-page?ref=x`), and `/old-page/` is the same as
+  `/old-page`.
+- A redirect can't point at another one: when `/a` went to `/b` and `/b` then moved to `/c`, point
+  both at `/c`, so visitors and search engines take a single step. A mistake (a path without `/`, a
+  chain, a status other than 301, 302, 307 or 308) stops the site with a message naming the entry.
+- `bin/console check` (and so `deploy`) reports an old path that still has a page, which the
+  redirect would hide, and a target of this site that doesn't answer.
+- A [static build](../static-site-generator/hosts) writes them into the host's redirects
+  (`_redirects` on Cloudflare).
+
+A translated page's own URL (`slug:` in its front matter) is redirected from its folder path by
+itself; the map is for addresses that no longer exist anywhere.
+
 ## Responses to unknown routes
 
 - An unknown path gets a **404**, a wrong method a **405** with an `Allow` header. Both render

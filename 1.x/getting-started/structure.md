@@ -8,6 +8,8 @@ my-site/
 │   ├── bootstrap.php        The app's extension point: services, Twig additions, deploy steps
 │   ├── collections.php      Data collections and their fields
 │   ├── forms.php            Forms: fields, recipients, spam checks
+│   ├── globals.php          Values every template can read (social links, contacts)
+│   ├── redirects.php        Pages that moved: old path → new path
 │   └── routes.php           Routes → controllers
 ├── content/blog/            Blog posts, one folder each (see "The blog")
 ├── content/pages/           Content pages: About, Privacy… one folder each (see "Content pages")

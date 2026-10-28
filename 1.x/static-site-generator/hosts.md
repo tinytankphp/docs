@@ -2,7 +2,7 @@
 
 The PHP site sends more than pages: with each one, headers (the Content Security Policy, which
 tells browsers what may run on the page, and other protections), and redirects (`/blog/page/1` to
-`/blog`). A static host has no PHP to send them, so the build writes them in the host's own files.
+`/blog`, and the site's own [redirect map](../basics/routing#redirects)). A static host has no PHP to send them, so the build writes them in the host's own files.
 
 | `host` | Files | |
 |---|---|---|
