@@ -66,7 +66,8 @@ earlier versions, to roll back in its dashboard.
 4. For [forms sent over SMTP](./forms): sets `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER` and
    `SMTP_PASSWORD` from `.env` as the Worker's encrypted secrets (`wrangler secret bulk`, on its
    input: never written to a file). It warns about a `$` outside single quotes in those values,
-   and stops if a form needs `SMTP_HOST` and it's missing.
+   and stops if a form needs `SMTP_HOST` and it's missing. With any form, `PUSHOVER_TOKEN` and
+   `PUSHOVER_USER` too, when both are set ([alerts](./forms#when-a-message-can-t-be-sent)).
 
 | Option | |
 |---|---|
@@ -97,6 +98,9 @@ Publish on every push to `main` whose tests pass: a second job in the site's CI 
       SMTP_PORT: ${{ secrets.SMTP_PORT }}
       SMTP_USER: ${{ secrets.SMTP_USER }}
       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      # Optional: a push to your phone when a message can't be sent (Pushover):
+      PUSHOVER_TOKEN: ${{ secrets.PUSHOVER_TOKEN }}
+      PUSHOVER_USER: ${{ secrets.PUSHOVER_USER }}
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2

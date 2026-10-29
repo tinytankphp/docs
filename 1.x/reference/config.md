@@ -14,6 +14,7 @@ environment variables fit together.
 | `log.level` | string | `LOG_LEVEL`, or `debug` in development and `info` in production | The least important messages written to the [log](../features/logging) |
 | `log.days` | int | `14` | Daily log files to keep |
 | `log.alert_to` | ?string or list | `LOG_ALERT_TO` | Who gets an email when an error is logged (needs the mailer) |
+| `log.pushover` | `{token, user}` | `PUSHOVER_TOKEN`, `PUSHOVER_USER` | Push alerts through Pushover when an error is logged; both or neither ([Push alerts](../features/logging#push-alerts)) |
 | `log.path` | string | `var/log/app.log` | The log file (dated per day), or a stream like `php://stderr` |
 | `cdn.enabled` | bool | `CDN_CACHE=1`, else off | Cache pages at a CDN ([CDN caching](../deployment/cdn)) |
 | `cdn.ttl` | ?int | an hour with purging, else 5 minutes | How long the CDN keeps a page (`s-maxage`) |

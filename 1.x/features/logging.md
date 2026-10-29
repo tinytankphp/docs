@@ -70,7 +70,8 @@ far more than they need. TinyTank's log is built to answer "what broke, and wher
   needed. Two weeks is enough to notice and fix a problem; `days` changes it.
 - **No third party.** Error-tracking services (Sentry, Bugsnag, Better Stack…) receive your errors,
   and with them whatever the errors contain, on someone else's servers, often outside the EU. TinyTank's
-  log stays on your server, and alerts go through your own mailer.
+  log stays on your server, and alerts go through your own mailer. The one exception is yours to
+  choose: [push alerts](#push-alerts) send an error's message (nothing else) to Pushover.
 
 What can still end up in it: **error messages**, which are written by whoever threw the error. A
 library's message may quote the value it refused (an address, a file name), and so may your own
@@ -109,6 +110,32 @@ From then on, an `error` (or worse) is emailed to you, through the mailer forms 
 
 The subject reads `[Your site] ERROR: Price list unreadable`.
 
+## Push alerts
+
+A notification on your phone instead of, or as well as, an email, through
+[Pushover](https://pushover.net) (a one-time licence per platform, iOS, Android or desktop, after a
+free trial; sending through its API costs nothing):
+
+1. In Pushover, copy your **user key**, and create an application (**Create an Application/API
+   Token**): its **API token**.
+2. Put both in `.env`:
+
+   ```sh
+   PUSHOVER_TOKEN=…   # the application's API token
+   PUSHOVER_USER=…    # your user key
+   ```
+
+From then on, an `error` (or worse) is pushed with your site's name as the title:
+
+- **The message only:** no trace, no earlier lines, no request details. An error's message can still
+  quote a value (see above), so it goes to Pushover's servers: that's the choice you make by turning
+  this on. Leave the variables empty to keep everything on your server.
+- **Once per hour per error,** like the emails, and **after the visitor has the page**.
+- Both keys or neither: one alone stops the site with a message saying so.
+
+On a [static site](../static-site-generator/forms#when-a-message-can-t-be-sent), the same two keys make
+the form's Worker push an alert when a message can't be sent.
+
 ## Configuration
 
 ```php
@@ -117,6 +144,7 @@ The subject reads `[Your site] ERROR: Price list unreadable`.
     'level' => getenv('LOG_LEVEL') ?: null,      // null: debug in development, info in production
     'days' => 14,                                // daily files to keep
     'alert_to' => getenv('LOG_ALERT_TO') ?: null,
+    'pushover' => ['token' => getenv('PUSHOVER_TOKEN') ?: null, 'user' => getenv('PUSHOVER_USER') ?: null],
     // 'path' => 'php://stderr',                 // another file, or a stream
 ],
 ```

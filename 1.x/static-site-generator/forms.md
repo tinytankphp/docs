@@ -96,6 +96,27 @@ one of two ways (`static.send`):
   JavaScript, a short page lists them, with a link back to the form.
 - A bot that fills the hidden field is told it worked; nothing is sent.
 
+## When a message can't be sent
+
+The visitor sees it (above the form, with what they wrote kept) and can try again later; the Worker's
+log says why ([Troubleshooting](./troubleshooting#a-form-says-your-message-wasn-t-sent)). To hear
+about it yourself, add the [Pushover](https://pushover.net) keys to `.env`, the same ones as the PHP
+site's [push alerts](../features/logging#push-alerts):
+
+```sh
+PUSHOVER_TOKEN=…   # the application's API token
+PUSHOVER_USER=…    # your user key
+```
+
+`publish:static` uploads them as the Worker's secrets, with any form. A message that can't be sent
+then pushes an alert to your phone, titled with the site and the form, with the error
+(`A message wasn't sent: The mail server answered 535: …`) and a link to the form's page. Never what
+the visitor wrote. The alert goes out after the visitor has the answer, and at most once an hour from
+a running Worker, so a broken mail server doesn't flood your phone.
+
+The most common cause is the mail server itself (a changed password, a server refusing Cloudflare's
+connections), which is why the alert doesn't go by email.
+
 ## What it doesn't do
 
 These need the PHP site: the timing check and the rate limit, your own rules

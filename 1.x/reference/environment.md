@@ -19,6 +19,7 @@ lists them all.
 | `BUNNY_PULL_ZONE_ID`, `BUNNY_API_KEY` | for Bunny purging | | The pull zone's number and the account's API key |
 | `CDN_PURGE_CMD` | for `command` purging | | A command run with the URLs as arguments, none for everything |
 | `LOG_ALERT_TO` | no | | Email errors to this address (comma-separated for several), see [Logging](../features/logging) |
+| `PUSHOVER_TOKEN`, `PUSHOVER_USER` | no | | Push alerts through [Pushover](https://pushover.net): errors on the PHP site, a form that couldn't be sent on a static one. The application's token and your user key, both or neither ([Push alerts](../features/logging#push-alerts)) |
 | `LOG_LEVEL` | no | `debug` / `info` | The least important messages logged: `debug`, `info`, `notice`, `warning`, `error`… |
 | `MEDIA_URL` | no | | Serve post and page files and video posters from a CDN: an `https://` base URL, no trailing slash |
 | `BLOG_PER_PAGE` | no | `20` | Posts per page on `/blog` |
