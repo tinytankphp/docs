@@ -31,16 +31,34 @@ one of two ways (`static.send`):
    Rather keep the addresses out of the repository? Read them from `.env`, and leave the form
    without `static` when they aren't set (tests, CI): `'static' => getenv('STATIC_MAIL_FROM') ? [...] : null`.
 
-2. Let the form's template post to the host in a static build: `form_action()` is the page's own
-   URL on the PHP site and `/forms/<name>` in a static build, and Datastar's in-place submit is
-   left out (the skeleton's `templates/_forms/contact.twig` does both):
+2. Let the form's template post to the host in a static build. `form_action()` is the page's own
+   URL on the PHP site and `/forms/<name>` in a static build; send it with Datastar, so the answer
+   comes in place and nothing typed is lost (without JavaScript it's a plain post to the same
+   address). The skeleton's `templates/_forms/contact.twig` does all of this:
 
    ```twig
-   <form method="post" action="{{ form_action('contact', url) }}"
-         {% if not site.static %}data-on:submit__prevent="{{ datastar.action('post', url, {contentType: 'form'}) }}"{% endif %}>
+   <form id="contact-form" method="post" action="{{ form_action('contact', url) }}"
+         data-on:submit__prevent="{{ datastar.action('post', form_action('contact', url), {contentType: 'form'}) }}">
+       {{ form_spam('contact') }}   {# first: see below #}
+       {% if site.static %}
+           <p role="alert" data-show="$_forms.contact.errors._form" data-text="$_forms.contact.errors._form" style="display: none"></p>
+       {% endif %}
+       <input name="email" type="email" required
+              {% if site.static %}aria-describedby="contact-email-error" data-attr:aria-invalid="String(!!$_forms.contact.errors.email)"{% endif %}>
+       {% if site.static %}
+           <p id="contact-email-error" data-show="$_forms.contact.errors.email" data-text="$_forms.contact.errors.email" style="display: none"></p>
+       {% endif %}
        …
-       {{ form_spam('contact') }}
    ```
+
+   - The form needs an **`id`**: the host replaces the form, by that id, with its sent state, which
+     the build takes from the form page's sent version (`/contact/sent`).
+   - Mistakes come back as signals: `$_forms.<form>.errors.<field>` per field and
+     `$_forms.<form>.errors._form` for the whole form (too many links, a message that couldn't be
+     sent); `''` when fine. In a static build, `form_spam()` creates them, so it goes **before** the
+     elements that read them.
+   - On the PHP site, the same Datastar post goes to the page, which renders the form again with its
+     errors (`form.errors`), as before.
 
 3. With `smtp`, put the mail server's settings in `.env`:
 
@@ -71,10 +89,11 @@ one of two ways (`static.send`):
 - The visitor's message is checked like on the PHP site: required fields, lengths, email format,
   choices, the honeypot and the links limit, with the same messages in the page's language.
 - A valid message is emailed to you, from the form's `static.from`, with the visitor in Reply-To;
-  the visitor lands on the form page's **sent** state (`/contact/sent`, the page as it shows after
-  sending).
-- A message with mistakes gets a short page listing them, with a link back to the form (browsers
-  catch most of them before sending, from the same rules).
+  the form turns into its **sent** state in place (without JavaScript, the visitor lands on
+  `/contact/sent`, the page as it shows after sending).
+- Mistakes show next to their fields, and a message that couldn't be sent above the form; what was
+  typed stays (browsers catch most mistakes before sending, from the same rules). Without
+  JavaScript, a short page lists them, with a link back to the form.
 - A bot that fills the hidden field is told it worked; nothing is sent.
 
 ## What it doesn't do
