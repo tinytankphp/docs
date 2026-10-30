@@ -149,6 +149,19 @@ Vitest in the framework repository (`tests/js/`).
 
 ## Continuous integration
 
-`.github/workflows/ci.yml` runs on every push and pull request: install, `npm run build`, PHPUnit,
-PHPStan, then the Playwright browser tests. When a browser test fails, the HTML report with a trace
-of the failure is attached to the run.
+`.github/workflows/ci.yml` runs on every push and pull request: install, the dependency audits,
+`npm run build`, PHPUnit, PHPStan, then the Playwright browser tests (the
+[accessibility checks](./accessibility/checking) among them). When a browser test fails, the HTML
+report with a trace of the failure is attached to the run.
+
+The audits check your packages against the published security advisories, and fail the run when one
+is affected:
+
+- `composer audit`: the PHP packages (TinyTank, Symfony, Twig…), any advisory.
+- `npm audit --audit-level=high`: the JavaScript packages (Vite, Tailwind, Playwright…), high and
+  critical advisories only. Moderate ones appear in the log without failing: they're usually about
+  the build tools on your machine, never the published site.
+
+When one fails, the log names the package and the fixed version. Usually `composer update <package>`
+or `npm update <package>` fixes it; a package pinned by another one (npm's `overrides`, Composer's
+`conflict`) is the exception. Run the same commands locally to check before pushing.
