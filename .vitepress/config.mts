@@ -116,6 +116,14 @@ export default defineConfig({
                     ],
                 },
                 {
+                    text: 'Accessibility',
+                    items: [
+                        { text: 'Overview', link: `${v1}/accessibility/` },
+                        { text: 'Checking', link: `${v1}/accessibility/checking` },
+                        { text: 'Colour and contrast', link: `${v1}/accessibility/contrast` },
+                    ],
+                },
+                {
                     text: 'Static Site Generator',
                     items: [
                         { text: 'Overview', link: `${v1}/static-site-generator/` },

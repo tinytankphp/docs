@@ -28,6 +28,10 @@ in another tab while you work on the design.
 - [ ] **Colours and fonts**: the `@theme` block in `resources/css/app.css`, where each colour is a
       light and dark pair, and the font import above it ([Fonts & icons](../features/fonts-icons),
       [Dark & light theme](../features/theme)).
+- [ ] **Check the colours** in both themes once they're yours: `npm run build && npm run test:a11y`
+      ([Checking](../accessibility/checking)). A new palette often fails contrast in one theme; see
+      [Colour and contrast](../accessibility/contrast). Optionally, check before every push:
+      `git config core.hooksPath .githooks`.
 
 ## 3. The starter content
 
