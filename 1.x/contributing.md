@@ -11,12 +11,15 @@ TinyTank is three repositories:
 ## Working on all three together
 
 Changes often span the framework, the skeleton and the docs. Clone the other two repositories
-**inside** the skeleton; both locations are gitignored, so they're never published with it:
+**inside** the skeleton. `packages/*` is gitignored and `docs/` is excluded in your clone only
+(`.git/info/exclude`, so sites made from the skeleton don't inherit it): neither is ever published
+with it:
 
 ```sh
 git clone git@github.com:tinytankphp/tinytank.git && cd tinytank
 git clone git@github.com:tinytankphp/framework.git packages/tinytank
 git clone git@github.com:tinytankphp/docs.git docs
+printf '/docs/\n/sites/\n' >> .git/info/exclude   # this clone only
 ddev start
 ddev composer update tinytank/framework     # symlinks packages/tinytank into vendor/
 ```
