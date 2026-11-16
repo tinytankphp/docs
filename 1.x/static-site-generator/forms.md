@@ -6,8 +6,9 @@ and emails it to you. Every page stays a plain file; the Worker only runs for th
 one of two ways (`static.send`):
 
 - **`smtp`: your own mail server** (your domain's mailbox, your email provider's SMTP), on
-  Cloudflare's free plan. The Worker connects to it like a mail program: port 465 (TLS) or 587
-  (STARTTLS); Cloudflare blocks port 25.
+  Cloudflare's free plan. The Worker connects to it like a mail program: port 465 (TLS), or 587 or
+  another port with STARTTLS, which the server must offer: the password and the message never
+  travel unencrypted, and a server without TLS gets nothing. Cloudflare blocks port 25.
 - **`cloudflare`** (the default): Cloudflare's [Email Service](https://developers.cloudflare.com/email-service/),
   through a binding locked to the form's recipients. It needs a paid Workers plan and the sending
   domain set up there.
@@ -95,6 +96,15 @@ one of two ways (`static.send`):
   typed stays (browsers catch most mistakes before sending, from the same rules). Without
   JavaScript, a short page lists them, with a link back to the form.
 - A bot that fills the hidden field is told it worked; nothing is sent.
+- With the `timing` check, the build signs a token into the form's pages (`form_spam()` prints it)
+  and the Worker only takes posts that carry it: a script posting to `/forms/contact` without
+  loading the page is told it worked, and nothing is sent. The pages are files, so the token is the
+  same for every visitor until the next build; a build makes the tokens of older builds expire a day
+  later, and a visitor with a page that old is asked to reload it. The key it's checked with is
+  derived from `APP_SECRET` and written in `worker.js`, which is never served; `APP_SECRET` itself
+  stays on your machine. Build with the same `APP_SECRET` every time, or pages opened before a
+  build stop posting at once.
+- A body larger than 100 KB is refused, however it's sent.
 
 ## When a message can't be sent
 
@@ -119,9 +129,14 @@ connections), which is why the alert doesn't go by email.
 
 ## What it doesn't do
 
-These need the PHP site: the timing check and the rate limit, your own rules
+These need the PHP site: timing each submission (the static token says the post comes from the
+site's pages, not how long the visitor took) and the rate limit, your own rules
 (`$app->forms->rule()`), and a custom email template (`_emails/<form>.txt.twig`). The static site's
 email lists every field, like the default template.
+
+Without a rate limit, a script that loads the page first can still post as often as it likes. If
+that happens, add a [rate limiting rule](https://developers.cloudflare.com/waf/rate-limiting-rules/)
+for `/forms/*` in Cloudflare's dashboard (one rule is free).
 
 ::: tip Privacy
 The message goes through Cloudflare (your host), and your mail server with `smtp`, to you, and
